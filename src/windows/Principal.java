@@ -8,12 +8,13 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 
 /**
  * Ventana principal de la aplicación
- * 
+ *
  * @author xJoni
  */
 public class Principal extends javax.swing.JFrame {
@@ -22,74 +23,58 @@ public class Principal extends javax.swing.JFrame {
      * Cadena que guarda la formula ingresada
      */
     // public String formula = "";
-    
     /**
      * Arraylist de la formula
      */
     // ArrayList<String> formulas = new ArrayList<>();
-
     /**
      * Variable tipo nodo del arbol
      */
     //private Nodo arbolS;
-    
     /**
      * Instancia del analizador proposicional
      */
     // private AnalizadorProposicional analizador;
-    
-    
     /**
      * Metodo constructor de la ventana
      */
     public Principal() {
         initComponents();
-
-        validarTeclado();
+        disableKeyboard();
     }
 
-
-    private void escribir(String valor) {
+    private void writeTextArea(String text, JTextArea textArea) {
         try {
-            txtAreaInfija.getDocument().insertString(txtAreaInfija.getCaretPosition(), valor, null);
+            textArea.getDocument().insertString(textArea.getCaretPosition(), text, null);
         } catch (BadLocationException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, "No se logro escribir en Display", ex);
         }
     }
 
     /**
-     * Metodo que permite escribir e identificar la letra presionada
-     *
-     * @param evt evento del teclado
-     */
-    private void escribir(java.awt.event.KeyEvent evt) {
-        //97 = a q= 113 z=122
-        String form = txtAreaInfija.getText();
-        System.out.println("Tecla Presionada ..." + evt.getKeyCode());
-//        if (evt.getKeyCode() >= 65 && evt.getKeyCode() <= 90) {
-//            escribir(String.valueOf(evt.getKeyChar()));
-//        }else{
-//            evt.consume();
-//        }
-
-        if (evt.getKeyCode() < 65 && evt.getKeyChar() > 90) {
-            evt.consume();
-        }
-    }
-
-    /**
-     * Metodo que valida el texto ingresado, y limita lo que se desea ingresar
+     * Permite validar que teclas se permitirán en los campos de ingreso de
+     * formulas
      *
      * @see
      * http://www.javacreed.com/how-to-capture-key-events-with-jframe-or-window/
      */
-    private void validarTeclado() {
+    private void disableKeyboard() {
+
+        // Text area de formula en forma infija
         txtAreaInfija.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                int c = e.getKeyChar();
-                //System.out.println("Tecla presionada " + c);
-                if (c < 112 || c > 122) {
+                if (e.getKeyChar() < 112 || e.getKeyChar() > 122) {
+                    e.consume();
+                }
+            }
+        });
+
+        // Text area de formula en forma polaca
+        txtAreaPolaca.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() < 112 || e.getKeyChar() > 122) {
                     e.consume();
                 }
             }
@@ -202,36 +187,32 @@ public class Principal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaInfija = new javax.swing.JTextArea();
-        operatorInclusive = new javax.swing.JButton();
-        operatorConjunction = new javax.swing.JButton();
-        operator = new javax.swing.JButton();
-        operatorNegation = new javax.swing.JButton();
-        operatorOnlyIf = new javax.swing.JButton();
-        leterR = new javax.swing.JButton();
-        btParentesis = new javax.swing.JButton();
-        btnY = new javax.swing.JButton();
-        btnP = new javax.swing.JButton();
-        btnQ = new javax.swing.JButton();
-        btnZ = new javax.swing.JButton();
-        btnW = new javax.swing.JButton();
-        btnS = new javax.swing.JButton();
-        btnX = new javax.swing.JButton();
-        btAnalizar = new javax.swing.JButton();
-        jLEstad = new javax.swing.JLabel();
+        btnOperatorInclusive = new javax.swing.JButton();
+        btnOperatorConjunction = new javax.swing.JButton();
+        btnOperatorEntonces = new javax.swing.JButton();
+        btnOperatorNegation = new javax.swing.JButton();
+        btnOperatorOnlyIf = new javax.swing.JButton();
+        btnLetterR = new javax.swing.JButton();
+        btnParentesis = new javax.swing.JButton();
+        btnLetterY = new javax.swing.JButton();
+        btnLetterP = new javax.swing.JButton();
+        btnLetterQ = new javax.swing.JButton();
+        btnLetterZ = new javax.swing.JButton();
+        btnLetterW = new javax.swing.JButton();
+        btnLetterS = new javax.swing.JButton();
+        btnLetterX = new javax.swing.JButton();
+        btnConvertInfija = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaVerdad = new javax.swing.JTable();
-        btAnalizar1 = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        cVisorFormula1 = new javax.swing.JTextArea();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        txtAreaPolaca = new javax.swing.JTextArea();
+        jmbMain = new javax.swing.JMenuBar();
+        jmFile = new javax.swing.JMenu();
+        jmiExit = new javax.swing.JMenuItem();
 
         jButton7.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jButton7.setText("()^()");
@@ -289,151 +270,143 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setText("Infija");
 
         txtAreaInfija.setColumns(20);
-        txtAreaInfija.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        txtAreaInfija.setFont(new java.awt.Font("Agency FB", 0, 24)); // NOI18N
         txtAreaInfija.setLineWrap(true);
         txtAreaInfija.setRows(5);
-        txtAreaInfija.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtAreaInfijaKeyReleased(evt);
-            }
-        });
         jScrollPane1.setViewportView(txtAreaInfija);
 
-        operatorInclusive.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        operatorInclusive.setText("( )v( )");
-        operatorInclusive.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        operatorInclusive.setPreferredSize(new java.awt.Dimension(51, 30));
-        operatorInclusive.addActionListener(new java.awt.event.ActionListener() {
+        btnOperatorInclusive.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorInclusive.setText("( )v( )");
+        btnOperatorInclusive.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorInclusive.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorInclusive.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operatorInclusiveActionPerformed(evt);
+                btnOperatorInclusiveActionPerformed(evt);
             }
         });
 
-        operatorConjunction.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        operatorConjunction.setText("()^()");
-        operatorConjunction.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        operatorConjunction.setPreferredSize(new java.awt.Dimension(51, 30));
-        operatorConjunction.addActionListener(new java.awt.event.ActionListener() {
+        btnOperatorConjunction.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorConjunction.setText("()^()");
+        btnOperatorConjunction.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorConjunction.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorConjunction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operatorConjunctionActionPerformed(evt);
+                btnOperatorConjunctionActionPerformed(evt);
             }
         });
 
-        operator.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        operator.setText("()→()");
-        operator.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        operator.setPreferredSize(new java.awt.Dimension(51, 30));
-        operator.addActionListener(new java.awt.event.ActionListener() {
+        btnOperatorEntonces.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorEntonces.setText("()→()");
+        btnOperatorEntonces.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorEntonces.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorEntonces.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operatorActionPerformed(evt);
+                btnOperatorEntoncesActionPerformed(evt);
             }
         });
 
-        operatorNegation.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        operatorNegation.setText("¬()");
-        operatorNegation.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        operatorNegation.setPreferredSize(new java.awt.Dimension(51, 30));
-        operatorNegation.addActionListener(new java.awt.event.ActionListener() {
+        btnOperatorNegation.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorNegation.setText("¬()");
+        btnOperatorNegation.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorNegation.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorNegation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operatorNegationActionPerformed(evt);
+                btnOperatorNegationActionPerformed(evt);
             }
         });
 
-        operatorOnlyIf.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        operatorOnlyIf.setText("()↔()");
-        operatorOnlyIf.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        operatorOnlyIf.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        operatorOnlyIf.setPreferredSize(new java.awt.Dimension(51, 30));
-        operatorOnlyIf.addActionListener(new java.awt.event.ActionListener() {
+        btnOperatorOnlyIf.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorOnlyIf.setText("()↔()");
+        btnOperatorOnlyIf.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnOperatorOnlyIf.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorOnlyIf.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorOnlyIf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operatorOnlyIfActionPerformed(evt);
+                btnOperatorOnlyIfActionPerformed(evt);
             }
         });
 
-        leterR.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        leterR.setText("r");
-        leterR.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterR.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterR.setText("r");
+        btnLetterR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leterRActionPerformed(evt);
+                btnLetterRActionPerformed(evt);
             }
         });
 
-        btParentesis.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btParentesis.setText("( )");
-        btParentesis.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btParentesis.setPreferredSize(new java.awt.Dimension(51, 30));
-        btParentesis.addActionListener(new java.awt.event.ActionListener() {
+        btnParentesis.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnParentesis.setText("( )");
+        btnParentesis.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnParentesis.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnParentesis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btParentesisActionPerformed(evt);
+                btnParentesisActionPerformed(evt);
             }
         });
 
-        btnY.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnY.setText("y");
-        btnY.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterY.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterY.setText("y");
+        btnLetterY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnYActionPerformed(evt);
+                btnLetterYActionPerformed(evt);
             }
         });
 
-        btnP.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnP.setText("p");
-        btnP.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterP.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterP.setText("p");
+        btnLetterP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPActionPerformed(evt);
+                btnLetterPActionPerformed(evt);
             }
         });
 
-        btnQ.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnQ.setText("q");
-        btnQ.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterQ.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterQ.setText("q");
+        btnLetterQ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQActionPerformed(evt);
+                btnLetterQActionPerformed(evt);
             }
         });
 
-        btnZ.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnZ.setText("z");
-        btnZ.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterZ.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterZ.setText("z");
+        btnLetterZ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnZActionPerformed(evt);
+                btnLetterZActionPerformed(evt);
             }
         });
 
-        btnW.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnW.setText("w");
-        btnW.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterW.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterW.setText("w");
+        btnLetterW.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnWActionPerformed(evt);
+                btnLetterWActionPerformed(evt);
             }
         });
 
-        btnS.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnS.setText("s");
-        btnS.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterS.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterS.setText("s");
+        btnLetterS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSActionPerformed(evt);
+                btnLetterSActionPerformed(evt);
             }
         });
 
-        btnX.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnX.setText("x");
-        btnX.addActionListener(new java.awt.event.ActionListener() {
+        btnLetterX.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterX.setText("x");
+        btnLetterX.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXActionPerformed(evt);
+                btnLetterXActionPerformed(evt);
             }
         });
 
-        btAnalizar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btAnalizar.setText("Convertir");
-        btAnalizar.addActionListener(new java.awt.event.ActionListener() {
+        btnConvertInfija.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnConvertInfija.setText("Convertir");
+        btnConvertInfija.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAnalizarActionPerformed(evt);
+                btnConvertInfijaActionPerformed(evt);
             }
         });
-
-        jLEstad.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLEstad.setText("Estadística: ");
 
         jTabbedPane1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
@@ -450,43 +423,11 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Tableaux", jPanel2);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder());
-
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        tablaVerdad.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane2.setViewportView(tablaVerdad);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Tabla de Verdad", jPanel1);
-
-        btAnalizar1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btAnalizar1.setText("Limpiar");
-        btAnalizar1.addActionListener(new java.awt.event.ActionListener() {
+        btnClear.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnClear.setText("Limpiar");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAnalizar1ActionPerformed(evt);
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -499,145 +440,139 @@ public class Principal extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setText("Polaca");
 
-        cVisorFormula1.setColumns(20);
-        cVisorFormula1.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
-        cVisorFormula1.setLineWrap(true);
-        cVisorFormula1.setRows(5);
-        cVisorFormula1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                cVisorFormula1KeyReleased(evt);
-            }
-        });
-        jScrollPane3.setViewportView(cVisorFormula1);
+        txtAreaPolaca.setColumns(20);
+        txtAreaPolaca.setFont(new java.awt.Font("Agency FB", 0, 24)); // NOI18N
+        txtAreaPolaca.setLineWrap(true);
+        txtAreaPolaca.setRows(5);
+        jScrollPane3.setViewportView(txtAreaPolaca);
 
-        jMenu1.setText("Archivo");
-        jMenu1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jmFile.setText("Archivo");
+        jmFile.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
-        jMenuItem4.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jMenuItem4.setText("Salir");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jmiExit.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jmiExit.setText("Salir");
+        jmiExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jmiExitActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jmFile.add(jmiExit);
 
-        jMenuBar1.add(jMenu1);
+        jmbMain.add(jmFile);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jmbMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLEstad, javax.swing.GroupLayout.PREFERRED_SIZE, 865, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel4))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(btnParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(btnOperatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnOperatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnOperatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(11, 11, 11)
-                                .addComponent(operatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(operatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(operatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(operatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(operator, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(jLabel2)))
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnW, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(btnX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnZ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnQ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(leterR, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnS, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btAnalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btAnalizar1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(btnOperatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnOperatorEntonces, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel2)))
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLetterW, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnLetterX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLetterY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLetterZ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLetterP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLetterQ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLetterR, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLetterS, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnConvertInfija, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(operatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(operatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(operatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnOperatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(8, 8, 8)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(operator, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(operatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(btnOperatorEntonces, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnQ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(leterR, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnS, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnLetterP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterQ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterR, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterS, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnW, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnX, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnY, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnZ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnLetterW, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterX, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterY, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterZ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btAnalizar1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btAnalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnConvertInfija, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jLEstad)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(30, 30, 30)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -645,105 +580,95 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void operatorInclusiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operatorInclusiveActionPerformed
-        escribir(operatorInclusive.getText());
-//        formula = Parser.ingresar(formula, btY.getText());
-//        cVisorFormula.setText(formula);
-    }//GEN-LAST:event_operatorInclusiveActionPerformed
+    private void btnOperatorInclusiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorInclusiveActionPerformed
+        writeTextArea(btnOperatorInclusive.getText().replace(" ", ""), txtAreaInfija);
+    }//GEN-LAST:event_btnOperatorInclusiveActionPerformed
 
-    private void operatorOnlyIfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operatorOnlyIfActionPerformed
-        escribir(operatorOnlyIf.getText());
-    }//GEN-LAST:event_operatorOnlyIfActionPerformed
+    private void btnOperatorOnlyIfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorOnlyIfActionPerformed
+        writeTextArea(btnOperatorOnlyIf.getText().replace(" ", ""), txtAreaInfija);
+    }//GEN-LAST:event_btnOperatorOnlyIfActionPerformed
 
-    private void operatorConjunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operatorConjunctionActionPerformed
-        escribir(operatorConjunction.getText());
-    }//GEN-LAST:event_operatorConjunctionActionPerformed
+    private void btnOperatorConjunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorConjunctionActionPerformed
+        writeTextArea(btnOperatorConjunction.getText().replace(" ", ""), txtAreaInfija);
+    }//GEN-LAST:event_btnOperatorConjunctionActionPerformed
 
-    private void operatorNegationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operatorNegationActionPerformed
-        escribir(operatorNegation.getText());
-    }//GEN-LAST:event_operatorNegationActionPerformed
+    private void btnOperatorNegationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorNegationActionPerformed
+        writeTextArea(btnOperatorNegation.getText().replace(" ", ""), txtAreaInfija);
+    }//GEN-LAST:event_btnOperatorNegationActionPerformed
 
-    private void txtAreaInfijaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaInfijaKeyReleased
-        //noRecibirLetras(evt);
-        //escribir(evt);
-    }//GEN-LAST:event_txtAreaInfijaKeyReleased
+    private void btnParentesisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnParentesisActionPerformed
+        writeTextArea(btnParentesis.getText().replace(" ", ""), txtAreaInfija);
+    }//GEN-LAST:event_btnParentesisActionPerformed
 
-    private void btParentesisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btParentesisActionPerformed
-        escribir(btParentesis.getText());
-    }//GEN-LAST:event_btParentesisActionPerformed
+    private void btnOperatorEntoncesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorEntoncesActionPerformed
+        writeTextArea(btnOperatorEntonces.getText().replace(" ", ""), txtAreaInfija);
+    }//GEN-LAST:event_btnOperatorEntoncesActionPerformed
 
-    private void operatorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operatorActionPerformed
-        escribir(operator.getText());
-    }//GEN-LAST:event_operatorActionPerformed
-
-    private void btAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAnalizarActionPerformed
+    private void btnConvertInfijaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertInfijaActionPerformed
         analizarFormulas();
-    }//GEN-LAST:event_btAnalizarActionPerformed
+    }//GEN-LAST:event_btnConvertInfijaActionPerformed
 
-    private void btnPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPActionPerformed
-        escribir(btnP.getText());
-//        formula = Parser.ingresar(formula, btnP.getText());
-//        cVisorFormula.setText(formula);
-    }//GEN-LAST:event_btnPActionPerformed
+    private void btnLetterPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPActionPerformed
+        writeTextArea(btnLetterP.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterPActionPerformed
 
-    private void btnQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQActionPerformed
-        escribir(btnQ.getText());
-    }//GEN-LAST:event_btnQActionPerformed
+    private void btnLetterQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterQActionPerformed
+        writeTextArea(btnLetterQ.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterQActionPerformed
 
-    private void leterRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leterRActionPerformed
-        escribir(leterR.getText());
-    }//GEN-LAST:event_leterRActionPerformed
+    private void btnLetterRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterRActionPerformed
+        writeTextArea(btnLetterR.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterRActionPerformed
 
-    private void btnSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSActionPerformed
-        escribir(btnS.getText());
-    }//GEN-LAST:event_btnSActionPerformed
+    private void btnLetterSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterSActionPerformed
+        writeTextArea(btnLetterS.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterSActionPerformed
 
-    private void btnWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWActionPerformed
-        escribir(btnW.getText());
-    }//GEN-LAST:event_btnWActionPerformed
+    private void btnLetterWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterWActionPerformed
+        writeTextArea(btnLetterW.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterWActionPerformed
 
-    private void btnXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXActionPerformed
-        escribir(btnX.getText());
-    }//GEN-LAST:event_btnXActionPerformed
+    private void btnLetterXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterXActionPerformed
+        writeTextArea(btnLetterX.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterXActionPerformed
 
-    private void btnYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYActionPerformed
-        escribir(btnY.getText());
-    }//GEN-LAST:event_btnYActionPerformed
+    private void btnLetterYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYActionPerformed
+        writeTextArea(btnLetterY.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterYActionPerformed
 
-    private void btnZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZActionPerformed
-        escribir(btnZ.getText());
-    }//GEN-LAST:event_btnZActionPerformed
+    private void btnLetterZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterZActionPerformed
+        writeTextArea(btnLetterZ.getText(), txtAreaInfija);
+    }//GEN-LAST:event_btnLetterZActionPerformed
 
-    private void btAnalizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAnalizar1ActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtAreaInfija.setText("");
-        jLEstad.setText("");
-        tablaVerdad.setModel(new DefaultTableModel());
-    }//GEN-LAST:event_btAnalizar1ActionPerformed
+    }//GEN-LAST:event_btnClearActionPerformed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_formKeyReleased
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void jmiExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExitActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void cVisorFormula1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cVisorFormula1KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cVisorFormula1KeyReleased
+    }//GEN-LAST:event_jmiExitActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAnalizar;
-    private javax.swing.JButton btAnalizar1;
-    private javax.swing.JButton btParentesis;
-    private javax.swing.JButton btnP;
-    private javax.swing.JButton btnQ;
-    private javax.swing.JButton btnS;
-    private javax.swing.JButton btnW;
-    private javax.swing.JButton btnX;
-    private javax.swing.JButton btnY;
-    private javax.swing.JButton btnZ;
-    private javax.swing.JTextArea cVisorFormula1;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnConvertInfija;
+    private javax.swing.JButton btnLetterP;
+    private javax.swing.JButton btnLetterQ;
+    private javax.swing.JButton btnLetterR;
+    private javax.swing.JButton btnLetterS;
+    private javax.swing.JButton btnLetterW;
+    private javax.swing.JButton btnLetterX;
+    private javax.swing.JButton btnLetterY;
+    private javax.swing.JButton btnLetterZ;
+    private javax.swing.JButton btnOperatorConjunction;
+    private javax.swing.JButton btnOperatorEntonces;
+    private javax.swing.JButton btnOperatorInclusive;
+    private javax.swing.JButton btnOperatorNegation;
+    private javax.swing.JButton btnOperatorOnlyIf;
+    private javax.swing.JButton btnParentesis;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton17;
@@ -759,27 +684,18 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLEstad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton leterR;
-    private javax.swing.JButton operator;
-    private javax.swing.JButton operatorConjunction;
-    private javax.swing.JButton operatorInclusive;
-    private javax.swing.JButton operatorNegation;
-    private javax.swing.JButton operatorOnlyIf;
-    private javax.swing.JTable tablaVerdad;
+    private javax.swing.JMenu jmFile;
+    private javax.swing.JMenuBar jmbMain;
+    private javax.swing.JMenuItem jmiExit;
     private javax.swing.JTextArea txtAreaInfija;
+    private javax.swing.JTextArea txtAreaPolaca;
     // End of variables declaration//GEN-END:variables
 }
