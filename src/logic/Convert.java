@@ -24,10 +24,8 @@ public class Convert {
      * Cantidad de atomos que debe tener la formula
      */
     public static final int NUMBER_ATOMS = 5;
-    
-    
-    static String aux;
 
+    static String aux;
 
     /**
      * Se encarga de llamar las funciones de validacion de que la formula este
@@ -56,48 +54,46 @@ public class Convert {
      */
     private static boolean validateInfixFormula(String formula) {
 
-        int formulaSize = formula.length() - 1;
-        
         // Casos basicos para determinar si esta o no bien formada la formula
-        if (formula.length() == 2 || formula.length() == 0) {
-            return false;
-        } else if (formula.length() == 1 && (formula.charAt(0) == 'p' || formula.charAt(0) == 'r' || formula.charAt(0) == 'q'
-                || formula.charAt(0) == 's' || formula.charAt(0) == 'w'
-                || formula.charAt(0) == 'x' || formula.charAt(0) == 'y' || formula.charAt(0) == 'z')) {
+        if (formula.length() == 1 && (formula.charAt(0) == 'p' || formula.charAt(0) == 'r' || formula.charAt(0) == 'q' || formula.charAt(0) == 's'
+                || formula.charAt(0) == 'w' || formula.charAt(0) == 'x' || formula.charAt(0) == 'y' || formula.charAt(0) == 'z')) {
             return true;
+        } else if (formula.length() == 2 && (formula.charAt(0) == '¬' && ((formula.charAt(1) == 'p' || formula.charAt(1) == 'r' || formula.charAt(1) == 'q' 
+                || formula.charAt(1) == 's' || formula.charAt(1) == 'w' || formula.charAt(1) == 'x' || formula.charAt(1) == 'y' || formula.charAt(1) == 'z')))) {
+            return true;
+        } else if ((formula.length() == 2 && (formula.charAt(0) != '¬')) || formula.length() == 0) {
+            return false;
         } else if (formula.charAt(0) != '¬' && formula.charAt(0) != '(') {
             return false;
-        } else if(formula.length() == 1 && (formula.charAt(0) == '¬' || formula.charAt(0) == '(' || formula.charAt(0) == ')')) {
+        } else if (formula.length() == 1 && (formula.charAt(0) == '¬' || formula.charAt(0) == '(' || formula.charAt(0) == ')')) {
             return false;
         }
-        
+
         // Cuando comienza por negado ¬
         if (formula.charAt(0) == '¬') {
-            formula = formula.substring(2, formulaSize);
+            formula = formula.substring(2, formula.length() - 1);
             return validateInfixFormula(formula);
         } else if (formula.charAt(0) == '(') { // Cuando comienza por (
 
             // Tomamos la posicion del operador principal
-            int posicion = searchPositionOperatorPrincipal(formula);
+            int positionOperatorPrincipal = searchPositionOperatorPrincipal(formula);
 
-            if (posicion + 3 > formula.length()) {
-                return false;
-            }
-            if ((formula.charAt(posicion) != '\u2192') && (formula.charAt(posicion) != '^') && (formula.charAt(posicion) != 'V')
-                    && (formula.charAt(posicion) != '\u2194')) {
-                System.out.println(
-                        "El operador ''" + formula.charAt(posicion) + "'' es invalido (Debe ser un operador binario)");
+            // En caso de superar la longitud de la formula desde la posicion del operador principal
+            if (positionOperatorPrincipal + 3 > formula.length()) {
                 return false;
             }
 
-            /**
-             * Variable auxiliar que guarda la expresion que se encuentra en la
-             * variable aux
-             */
-            String auxFormula = formula;
-            formula = formula.substring(1, posicion - 1);
-            auxFormula = auxFormula.substring(posicion + 2, formulaSize);
-            return validateInfixFormula(formula) & validateInfixFormula(auxFormula);
+            // Si la posicion del operador principal encontrado no es un operador binario
+            if ((formula.charAt(positionOperatorPrincipal) != '\u2192') && (formula.charAt(positionOperatorPrincipal) != '^') && (formula.charAt(positionOperatorPrincipal) != 'v')
+                    && (formula.charAt(positionOperatorPrincipal) != '\u2194')) {
+                return false;
+            }
+
+            // Se toma la siguiente parte de la formula a trabajar
+            String auxFormula = formula.substring(positionOperatorPrincipal + 2, formula.length() - 1);
+            String auxFormula2 = formula.substring(1, positionOperatorPrincipal - 1);
+
+            return validateInfixFormula(auxFormula) & validateInfixFormula(auxFormula2);
         }
 
         return true;
