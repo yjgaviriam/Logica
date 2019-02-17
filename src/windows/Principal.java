@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 
 /**
@@ -54,7 +54,8 @@ public class Principal extends javax.swing.JFrame {
         try {
             textArea.getDocument().insertString(textArea.getCaretPosition(), text, null);
         } catch (BadLocationException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, "No se logro escribir en Display", ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, "Error al intentar escribir!", ex);
+            JOptionPane.showMessageDialog(null, "Error al intentar escribir!");
         }
     }
 
@@ -71,7 +72,7 @@ public class Principal extends javax.swing.JFrame {
         txtAreaInfix.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) {
+                if ((e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) && (e.getKeyChar() != 40 && e.getKeyChar() != 41)) {
                     e.consume();
                 }
             }
@@ -81,7 +82,8 @@ public class Principal extends javax.swing.JFrame {
         txtAreaPolish.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() != 78 && e.getKeyChar() != 65 && e.getKeyChar() != 75 && e.getKeyChar() != 67 && e.getKeyChar() != 69) {
+                if ((e.getKeyChar() != 78 && e.getKeyChar() != 65 && e.getKeyChar() != 75 && e.getKeyChar() != 67 && e.getKeyChar() != 69)
+                        && ((e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) && (e.getKeyChar() != 40 && e.getKeyChar() != 41))) {
                     e.consume();
                 }
             }
@@ -90,10 +92,10 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
-     * Metodo que analiza la formula que se le ingresa a traves del textArea
+     * Valida que la formula ingresada en los campos este bien formada antes de realizar las operaciones
      */
-    private void analizarFormulas() {
-        // formulas.clear();
+    private void checkFormulas() {
+        //formulas.clear();
         //Parser.hallarFormulas(cVisorFormula.getText().replace(" ", ""));
         //formulas = Parser.getFormulas();
         /*if (Parser.bienFormada(formulas)) {
@@ -839,7 +841,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOperatorEntoncesActionPerformed
 
     private void btnConvertInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertInfixActionPerformed
-        analizarFormulas();
+        checkFormulas();
     }//GEN-LAST:event_btnConvertInfixActionPerformed
 
     private void btnLetterPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPActionPerformed
