@@ -24,8 +24,10 @@ public class Convert {
      * Cantidad de atomos que debe tener la formula
      */
     public static final int NUMBER_ATOMS = 5;
-
+    
+    
     static String aux;
+
 
     /**
      * Se encarga de llamar las funciones de validacion de que la formula este
@@ -53,45 +55,38 @@ public class Convert {
      * contrario
      */
     private static boolean validateInfixFormula(String formula) {
-        aux = formula;
 
-        // Tomamos la cantidad de letras que tiene la formula
-        int tamanoFormula = formula.length();
-
-        if (aux.length() == 2 || aux.length() == 0) {
+        int formulaSize = formula.length() - 1;
+        
+        // Casos basicos para determinar si esta o no bien formada la formula
+        if (formula.length() == 2 || formula.length() == 0) {
             return false;
-        }
-
-        if (aux.length() == 1 && (aux.charAt(0) == 'p' || aux.charAt(0) == 'r' || aux.charAt(0) == 'q'
-                || aux.charAt(0) == 's' || aux.charAt(0) == 't' || aux.charAt(0) == 'u' || aux.charAt(0) == 'w'
-                || aux.charAt(0) == 'v' || aux.charAt(0) == 'x' || aux.charAt(0) == 'y' || aux.charAt(0) == 'z')) {
-
+        } else if (formula.length() == 1 && (formula.charAt(0) == 'p' || formula.charAt(0) == 'r' || formula.charAt(0) == 'q'
+                || formula.charAt(0) == 's' || formula.charAt(0) == 'w'
+                || formula.charAt(0) == 'x' || formula.charAt(0) == 'y' || formula.charAt(0) == 'z')) {
             return true;
-
-        } else if ((aux.charAt(0) != '¬') && (aux.charAt(0) != '(')) {
-
+        } else if (formula.charAt(0) != '¬' && formula.charAt(0) != '(') {
             return false;
-
+        } else if(formula.length() == 1 && (formula.charAt(0) == '¬' || formula.charAt(0) == '(' || formula.charAt(0) == ')')) {
+            return false;
         }
-        if (aux.charAt(0) == '¬') { // Cuando comienza por negado ¬
-            aux = aux.substring(2, tamanoFormula - 1);
-            return validateInfixFormula(aux);
+        
+        // Cuando comienza por negado ¬
+        if (formula.charAt(0) == '¬') {
+            formula = formula.substring(2, formulaSize);
+            return validateInfixFormula(formula);
+        } else if (formula.charAt(0) == '(') { // Cuando comienza por (
 
-        } else if (aux.charAt(0) == '(') {// Cuando comienza por (
+            // Tomamos la posicion del operador principal
+            int posicion = searchPositionOperatorPrincipal(formula);
 
-            /**
-             * Variable que me guarda la posiciOn del operador principal de la
-             * expresi0n, que es determinado por el MEtodo buscarPosicionOpePPal
-             */
-            int posicion = buscarPosicionOpePpal(aux);
-
-            if (posicion + 3 > aux.length()) {
+            if (posicion + 3 > formula.length()) {
                 return false;
             }
-            if ((aux.charAt(posicion) != '\u2192') && (aux.charAt(posicion) != '^') && (aux.charAt(posicion) != 'V')
-                    && (aux.charAt(posicion) != '\u2194')) {
+            if ((formula.charAt(posicion) != '\u2192') && (formula.charAt(posicion) != '^') && (formula.charAt(posicion) != 'V')
+                    && (formula.charAt(posicion) != '\u2194')) {
                 System.out.println(
-                        "El operador ''" + aux.charAt(posicion) + "'' es invalido (Debe ser un operador binario)");
+                        "El operador ''" + formula.charAt(posicion) + "'' es invalido (Debe ser un operador binario)");
                 return false;
             }
 
@@ -99,10 +94,10 @@ public class Convert {
              * Variable auxiliar que guarda la expresion que se encuentra en la
              * variable aux
              */
-            String aux3 = aux;
-            aux = aux.substring(1, posicion - 1);
-            aux3 = aux3.substring(posicion + 2, tamanoFormula - 1);
-            return validateInfixFormula(aux) & validateInfixFormula(aux3);
+            String auxFormula = formula;
+            formula = formula.substring(1, posicion - 1);
+            auxFormula = auxFormula.substring(posicion + 2, formulaSize);
+            return validateInfixFormula(formula) & validateInfixFormula(auxFormula);
         }
 
         return true;
@@ -156,7 +151,7 @@ public class Convert {
     }
 
     public static char buscarOpPrincipal(String aux) {
-        int pos = buscarPosicionOpePpal(aux);
+        int pos = searchPositionOperatorPrincipal(aux);
         if (pos == 0) {
             return aux.charAt(0);
         }
@@ -167,7 +162,7 @@ public class Convert {
         }
     }
 
-    public static int buscarPosicionOpePpal(String aux) {
+    public static int searchPositionOperatorPrincipal(String aux) {
 
         /**
          * Cuenta , sumando o restando dependiendo si se encuentra con un

@@ -18,9 +18,6 @@ import logic.Convert;
 public class Principal extends javax.swing.JFrame {
 
     /**
-     * Cadena que guarda la formula ingresada
-     */
-    // public String formula = "";
     /**
      * Variable tipo nodo del arbol
      */
