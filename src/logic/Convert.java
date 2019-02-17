@@ -186,37 +186,4 @@ public class Convert {
 
         return position;
     }
-
-    public static ArrayList<String> OrdenarArray(ArrayList<String> lista) {
-
-        /**
-         * Variables que ayudan en el metodo de ordenamiento del ArrayList
-         */
-        int p, j;
-
-        /**
-         * Variable que guarda temporalmente el elemento que se quiere mover de
-         * posicion dentro del ArrayList
-         */
-        String aux;
-        for (p = 1; p < lista.size(); p++) { // Desde el segundo elemento hasta
-            aux = lista.get(p); // el final, guardamos el elemento y
-            j = p - 1; // empezamos a comprobar con el anterior
-            while ((j >= 0) && (aux.length() < lista.get(j).length())) { // Mientras
-                // queden
-                // posiciones
-                // y
-                // el
-                // valor de aux sea menor que los
-                lista.remove(j + 1);
-                lista.add(j + 1, lista.get(j));
-                // de la izquierda, se desplaza a
-                j--; // la derecha
-            }
-            lista.remove(j + 1);
-            lista.add(j + 1, aux); // Colocamos aux en su sitio
-        }
-        return lista;
-
-    }
 }
