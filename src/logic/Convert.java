@@ -25,8 +25,6 @@ public class Convert {
      */
     public static final int NUMBER_ATOMS = 5;
 
-    static String aux;
-
     /**
      * Se encarga de llamar las funciones de validacion de que la formula este
      * bien formada y retornar este valor a la interfaz grafica
@@ -58,7 +56,7 @@ public class Convert {
         if (formula.length() == 1 && (formula.charAt(0) == 'p' || formula.charAt(0) == 'r' || formula.charAt(0) == 'q' || formula.charAt(0) == 's'
                 || formula.charAt(0) == 'w' || formula.charAt(0) == 'x' || formula.charAt(0) == 'y' || formula.charAt(0) == 'z')) {
             return true;
-        } else if (formula.length() == 2 && (formula.charAt(0) == '¬' && ((formula.charAt(1) == 'p' || formula.charAt(1) == 'r' || formula.charAt(1) == 'q' 
+        } else if (formula.length() == 2 && (formula.charAt(0) == '¬' && ((formula.charAt(1) == 'p' || formula.charAt(1) == 'r' || formula.charAt(1) == 'q'
                 || formula.charAt(1) == 's' || formula.charAt(1) == 'w' || formula.charAt(1) == 'x' || formula.charAt(1) == 'y' || formula.charAt(1) == 'z')))) {
             return true;
         } else if ((formula.length() == 2 && (formula.charAt(0) != '¬')) || formula.length() == 0) {
@@ -146,49 +144,47 @@ public class Convert {
         return atoms.size() >= NUMBER_ATOMS;
     }
 
-    public static char buscarOpPrincipal(String aux) {
-        int pos = searchPositionOperatorPrincipal(aux);
-        if (pos == 0) {
-            return aux.charAt(0);
-        }
-        if (aux.charAt(pos) == '(') {
-            return aux.charAt(pos - 1);
-        } else {
-            return aux.charAt(pos);
-        }
-    }
+    /**
+     * Identifica el operador principal de la porcion de formula recibida
+     *
+     * @param formula Porcion de la formula original
+     * @return posicion donde se encontro el operador
+     */
+    public static int searchPositionOperatorPrincipal(String formula) {
 
-    public static int searchPositionOperatorPrincipal(String aux) {
-
-        /**
-         * Cuenta , sumando o restando dependiendo si se encuentra con un
-         * parentesis izquierdo o derecho
-         */
-        int con = 0;
-
-        /**
-         * Guarda la posicion en la que se encuentra el operador principal
-         */
-        int posicion = 0;
-
-        if (aux.charAt(0) == '¬') {
+        // Si es una negacion se devuelve de una vez el operador en la posicion inicial
+        if (formula.charAt(0) == '¬') {
             return 0;
         }
-        for (int i = 0; i < aux.length(); i++) {
 
-            if (aux.charAt(i) == '(') {
-                con = con + 1;
+        //Cuenta, sumando o restando dependiendo si se encuentra con un parentesis izquierdo o derecho
+        int count = 0;
+
+        //Guarda la posicion en la que se encuentra el operador principal
+        int position = 0;
+
+        // Recorremos la formula
+        for (int i = 0; i < formula.length(); i++) {
+
+            // Contamos parentesis abiertos
+            if (formula.charAt(i) == '(') {
+                count = count + 1;
             }
-            if (aux.charAt(i) == ')') {
-                con = con - 1;
+
+            // Descontamos cada parentesis cerrado
+            if (formula.charAt(i) == ')') {
+                count = count - 1;
             }
-            posicion = i + 1;
-            if (con == 0) {
+
+            position = i + 1;
+
+            // Al cerrar los parentesis termina de leerse la formula
+            if (count == 0) {
                 break;
             }
         }
 
-        return posicion;
+        return position;
     }
 
     public static ArrayList<String> OrdenarArray(ArrayList<String> lista) {
