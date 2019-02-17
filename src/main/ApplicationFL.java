@@ -14,8 +14,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import windows.Principal;
 
 /**
+ * Clase que arranca la aplicacion con la interfaz principal
  *
  * @author xJoni
+ * @version 1.0
  */
 public class ApplicationFL {
 
@@ -30,7 +32,7 @@ public class ApplicationFL {
                 principal.setVisible(true);
                 principal.setLocationRelativeTo(null);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                Logger.getLogger(ApplicationFL.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ApplicationFL.class.getName()).log(Level.SEVERE, "Problemas para arrancar la aplicación.", ex);
                 JOptionPane.showMessageDialog(null, "Problemas para arrancar la aplicación.");
             }
         });

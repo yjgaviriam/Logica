@@ -1,21 +1,19 @@
 package windows;
 
-/*import logica.AnalizadorProposicional;
-import logica.Nodo;
-import logica.Parser;*/
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
+import logic.Convert;
 
 /**
  * Ventana principal de la aplicación
  *
  * @author xJoni
+ * @version 1.0
  */
 public class Principal extends javax.swing.JFrame {
 
@@ -23,10 +21,6 @@ public class Principal extends javax.swing.JFrame {
      * Cadena que guarda la formula ingresada
      */
     // public String formula = "";
-    /**
-     * Arraylist de la formula
-     */
-    // ArrayList<String> formulas = new ArrayList<>();
     /**
      * Variable tipo nodo del arbol
      */
@@ -39,32 +33,15 @@ public class Principal extends javax.swing.JFrame {
      * Metodo constructor de la ventana
      */
     public Principal() {
+        // Se inician los componentes graficos de java swing
         initComponents();
+        // Deshabilitamos las teclas que no se usan en las formulas de los text area
         disableKeyboard();
-    }
-
-    /**
-     * Se encarga de adiccionar al text area recibido como parametro el texto
-     * del boton presionado
-     *
-     * @param text Texto del boton presionado
-     * @param textArea Area de texto correspondiente al boton presionado
-     */
-    private void writeTextArea(String text, JTextArea textArea) {
-        try {
-            textArea.getDocument().insertString(textArea.getCaretPosition(), text, null);
-        } catch (BadLocationException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, "Error al intentar escribir!", ex);
-            JOptionPane.showMessageDialog(null, "Error al intentar escribir!");
-        }
     }
 
     /**
      * Permite validar que teclas se permitirán en los campos de ingreso de
      * formulas
-     *
-     * @see
-     * http://www.javacreed.com/how-to-capture-key-events-with-jframe-or-window/
      */
     private void disableKeyboard() {
 
@@ -72,6 +49,11 @@ public class Principal extends javax.swing.JFrame {
         txtAreaInfix.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
+
+                // Se limpia e inhabilita el textArea que no se esta trabajando
+                disableClearTextArea(txtAreaPolish);
+
+                // Validacion para no tomar las teclas que no tienen que ver con la formula
                 if ((e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) && (e.getKeyChar() != 40 && e.getKeyChar() != 41)) {
                     e.consume();
                 }
@@ -82,6 +64,11 @@ public class Principal extends javax.swing.JFrame {
         txtAreaPolish.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
+
+                // Se limpia e inhabilita el textArea que no se esta trabajando
+                disableClearTextArea(txtAreaInfix);
+
+                // Validacion para no tomar las teclas que no tienen que ver con la formula
                 if ((e.getKeyChar() != 78 && e.getKeyChar() != 65 && e.getKeyChar() != 75 && e.getKeyChar() != 67 && e.getKeyChar() != 69)
                         && ((e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) && (e.getKeyChar() != 40 && e.getKeyChar() != 41))) {
                     e.consume();
@@ -92,51 +79,68 @@ public class Principal extends javax.swing.JFrame {
     }
 
     /**
-     * Valida que la formula ingresada en los campos este bien formada antes de realizar las operaciones
+     * Se encarga de adiccionar al text area recibido como parametro el texto
+     * del boton presionado
+     *
+     * @param text Texto del boton presionado
+     * @param textArea Area de texto correspondiente al boton presionado
      */
-    private void checkFormulas() {
-        //formulas.clear();
-        //Parser.hallarFormulas(cVisorFormula.getText().replace(" ", ""));
-        //formulas = Parser.getFormulas();
-        /*if (Parser.bienFormada(formulas)) {
-
-            Parser.encontrarFormulasRepetidas();
-            Parser.literales(formulas);
-
-            if (Parser.getAtomos().size() >= 5) {
-                boolean sa = Parser.verSatisfacibilidad(Parser.getTabla());
-                if (sa) {
-                    estad[3] = "Es satisfacible";
-                    dibujarArbol();
-                } else {
-                    estad[3] = "No es satisfacible";
-                }
-
-                imprimirTablaConsola();
-                estadistica();
-            } else {
-                JOptionPane.showMessageDialog(this, "Debe Ingresar Mínimo 5\nFormas Proposicionales Atómicas");
-                jLEstad.setText("");
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingresó una fórmula mal formada");
-        }*/
+    private void writeTextArea(String text, JTextArea textAreaWrite, JTextArea textAreaClear) {
+        try {
+            // Se limpia e inhabilita el textArea que no se esta trabajando
+            disableClearTextArea(textAreaClear);
+            // Se escribe en el textArea que se presiono el boton
+            textAreaWrite.getDocument().insertString(textAreaWrite.getCaretPosition(), text, null);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, "Error al intentar escribir!", ex);
+            JOptionPane.showMessageDialog(null, "Error al intentar escribir!");
+        }
     }
 
     /**
-     * Metodo que recopila la informacion de la formula guardada en un arreglo y
-     * la muestra en la interfaz
+     * Se encarga de limpiar las cajas de texto y habilitarlas
      */
-    /*public void estadistica() {
-        char op = Parser.buscarOpPrincipal(Parser.getFormulas().get(0));
-        estad[0] = "Operador principal: " + op;
-        int num = Parser.getAtomos().size();
-        estad[1] = "N° átomos: " + num;
-        System.out.println("Caracter: " + op);
-        jLEstad.setText("Estadistica: " + estad[0] + " | " + estad[1] + " | " + estad[2] + " | " + estad[3]);
+    private void enableClearTextArea(JTextArea textArea) {
+        textArea.setText("");
+        textArea.setEnabled(true);
+    }
 
-    }*/
+    /**
+     * Se encarga de deshabilitar y limpiar el texto del text area indicado
+     *
+     * @param textArea
+     */
+    private void disableClearTextArea(JTextArea textArea) {
+        textArea.setText("");
+        textArea.setEnabled(false);
+    }
+
+    /**
+     * Valida que la formula ingresada en los campos este bien formada antes de
+     * realizar las operaciones
+     *
+     * @param txtArea Es la caja de la cual se va tomar la formula
+     * @param typeFormula Indica si es formula en forma infija o polaca
+     */
+    private void checkFormulas(JTextArea txtArea, int typeFormula) {
+
+        // Tomamos la formula de la caja recibida por parametro
+        String formula = txtArea.getText().replace(" ", "");
+
+        // Se valida que sea una formula bien formada
+        if (Convert.checkFormula(formula, typeFormula)) {
+
+            // Se valida que contenga al menos 5 atomos la formula
+            if (Convert.validateNumberAtoms(formula)) {
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Debe Ingresar Mínimo 5 \nFormas Proposicionales Atómicas");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingresó una fórmula mal formada");
+        }
+    }
+
     /**
      * Metodo que permite dibujar el arbol
      */
@@ -179,21 +183,6 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
-        jButton20 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
-        jButton22 = new javax.swing.JButton();
-        jButton23 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
-        jButton25 = new javax.swing.JButton();
-        jButton26 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaInfix = new javax.swing.JTextArea();
@@ -212,8 +201,6 @@ public class Principal extends javax.swing.JFrame {
         btnLetterS = new javax.swing.JButton();
         btnLetterX = new javax.swing.JButton();
         btnConvertInfix = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
         btnClearInfix = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -240,51 +227,6 @@ public class Principal extends javax.swing.JFrame {
         jmbMain = new javax.swing.JMenuBar();
         jmFile = new javax.swing.JMenu();
         jmiExit = new javax.swing.JMenuItem();
-
-        jButton7.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton7.setText("()^()");
-
-        jButton8.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton8.setText("()V()");
-
-        jButton9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton9.setText("()V()");
-
-        jButton10.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton10.setText("()^()");
-
-        jButton11.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton11.setText("()V()");
-
-        jButton17.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton17.setText("()V()");
-
-        jButton18.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton18.setText("()^()");
-
-        jButton19.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton19.setText("()^()");
-
-        jButton20.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton20.setText("()V()");
-
-        jButton21.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton21.setText("()V()");
-
-        jButton22.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton22.setText("()V()");
-
-        jButton23.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton23.setText("()^()");
-
-        jButton24.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton24.setText("()V()");
-
-        jButton25.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton25.setText("()^()");
-
-        jButton26.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton26.setText("()V()");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -434,21 +376,6 @@ public class Principal extends javax.swing.JFrame {
                 btnConvertInfixActionPerformed(evt);
             }
         });
-
-        jTabbedPane1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 546, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 449, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Tableaux", jPanel2);
 
         btnClearInfix.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         btnClearInfix.setText("Limpiar");
@@ -633,27 +560,21 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4))
+                        .addGap(360, 360, 360)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel2)
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel3))
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel4))
-                                .addGap(360, 360, 360)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel3))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(48, 48, 48)
-                                        .addComponent(jLabel6)))
-                                .addGap(77, 77, 77)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jLabel5)
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel6)))
+                        .addGap(0, 77, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)
@@ -808,76 +729,74 @@ public class Principal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnOperatorEntoncesPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOperatorInclusiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorInclusiveActionPerformed
-        writeTextArea(btnOperatorInclusive.getText().replace(" ", ""), txtAreaInfix);
+        writeTextArea(btnOperatorInclusive.getText().replace(" ", ""), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnOperatorInclusiveActionPerformed
 
     private void btnOperatorOnlyIfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorOnlyIfActionPerformed
-        writeTextArea(btnOperatorOnlyIf.getText().replace(" ", ""), txtAreaInfix);
+        writeTextArea(btnOperatorOnlyIf.getText().replace(" ", ""), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnOperatorOnlyIfActionPerformed
 
     private void btnOperatorConjunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorConjunctionActionPerformed
-        writeTextArea(btnOperatorConjunction.getText().replace(" ", ""), txtAreaInfix);
+        writeTextArea(btnOperatorConjunction.getText().replace(" ", ""), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnOperatorConjunctionActionPerformed
 
     private void btnOperatorNegationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorNegationActionPerformed
-        writeTextArea(btnOperatorNegation.getText().replace(" ", ""), txtAreaInfix);
+        writeTextArea(btnOperatorNegation.getText().replace(" ", ""), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnOperatorNegationActionPerformed
 
     private void btnParentesisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnParentesisActionPerformed
-        writeTextArea(btnParentesis.getText().replace(" ", ""), txtAreaInfix);
+        writeTextArea(btnParentesis.getText().replace(" ", ""), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnParentesisActionPerformed
 
     private void btnOperatorEntoncesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorEntoncesActionPerformed
-        writeTextArea(btnOperatorEntonces.getText().replace(" ", ""), txtAreaInfix);
+        writeTextArea(btnOperatorEntonces.getText().replace(" ", ""), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnOperatorEntoncesActionPerformed
 
     private void btnConvertInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertInfixActionPerformed
-        checkFormulas();
+        checkFormulas(txtAreaInfix, Convert.INFIX_FORMULA);
     }//GEN-LAST:event_btnConvertInfixActionPerformed
 
     private void btnLetterPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPActionPerformed
-        writeTextArea(btnLetterP.getText(), txtAreaInfix);
+        writeTextArea(btnLetterP.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterPActionPerformed
 
     private void btnLetterQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterQActionPerformed
-        writeTextArea(btnLetterQ.getText(), txtAreaInfix);
+        writeTextArea(btnLetterQ.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterQActionPerformed
 
     private void btnLetterRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterRActionPerformed
-        writeTextArea(btnLetterR.getText(), txtAreaInfix);
+        writeTextArea(btnLetterR.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterRActionPerformed
 
     private void btnLetterSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterSActionPerformed
-        writeTextArea(btnLetterS.getText(), txtAreaInfix);
+        writeTextArea(btnLetterS.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterSActionPerformed
 
     private void btnLetterWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterWActionPerformed
-        writeTextArea(btnLetterW.getText(), txtAreaInfix);
+        writeTextArea(btnLetterW.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterWActionPerformed
 
     private void btnLetterXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterXActionPerformed
-        writeTextArea(btnLetterX.getText(), txtAreaInfix);
+        writeTextArea(btnLetterX.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterXActionPerformed
 
     private void btnLetterYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYActionPerformed
-        writeTextArea(btnLetterY.getText(), txtAreaInfix);
+        writeTextArea(btnLetterY.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterYActionPerformed
 
     private void btnLetterZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterZActionPerformed
-        writeTextArea(btnLetterZ.getText(), txtAreaInfix);
+        writeTextArea(btnLetterZ.getText(), txtAreaInfix, txtAreaPolish);
     }//GEN-LAST:event_btnLetterZActionPerformed
 
     private void btnClearInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearInfixActionPerformed
-        txtAreaInfix.setText("");
+        enableClearTextArea(txtAreaInfix);
     }//GEN-LAST:event_btnClearInfixActionPerformed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -889,63 +808,63 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiExitActionPerformed
 
     private void btnClearPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPolishActionPerformed
-        txtAreaPolish.setText("");
+        enableClearTextArea(txtAreaPolish);
     }//GEN-LAST:event_btnClearPolishActionPerformed
 
     private void btnLetterYPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYPolishActionPerformed
-        writeTextArea(btnLetterYPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterYPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterYPolishActionPerformed
 
     private void btnLetterPPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPPolishActionPerformed
-        writeTextArea(btnLetterPPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterPPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterPPolishActionPerformed
 
     private void btnLetterQPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterQPolishActionPerformed
-        writeTextArea(btnLetterQPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterQPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterQPolishActionPerformed
 
     private void btnLetterZPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterZPolishActionPerformed
-        writeTextArea(btnLetterZPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterZPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterZPolishActionPerformed
 
     private void btnLetterWPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterWPolishActionPerformed
-        writeTextArea(btnLetterWPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterWPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterWPolishActionPerformed
 
     private void btnLetterSPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterSPolishActionPerformed
-        writeTextArea(btnLetterSPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterSPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterSPolishActionPerformed
 
     private void btnLetterXPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterXPolishActionPerformed
-        writeTextArea(btnLetterXPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterXPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterXPolishActionPerformed
 
     private void btnConvertPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertPolishActionPerformed
-
+        checkFormulas(txtAreaPolish, Convert.POLISH_FORMULA);
     }//GEN-LAST:event_btnConvertPolishActionPerformed
 
     private void btnOperatorInclusivePolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorInclusivePolishActionPerformed
-        writeTextArea(btnOperatorInclusivePolish.getText(), txtAreaPolish);
+        writeTextArea(btnOperatorInclusivePolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnOperatorInclusivePolishActionPerformed
 
     private void btnOperatorConjunctionPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorConjunctionPolishActionPerformed
-        writeTextArea(btnOperatorConjunctionPolish.getText(), txtAreaPolish);
+        writeTextArea(btnOperatorConjunctionPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnOperatorConjunctionPolishActionPerformed
 
     private void btnOperatorEntoncesPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorEntoncesPolishActionPerformed
-        writeTextArea(btnOperatorEntoncesPolish.getText(), txtAreaPolish);
+        writeTextArea(btnOperatorEntoncesPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnOperatorEntoncesPolishActionPerformed
 
     private void btnOperatorNegationPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorNegationPolishActionPerformed
-        writeTextArea(btnOperatorNegationPolish.getText(), txtAreaPolish);
+        writeTextArea(btnOperatorNegationPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnOperatorNegationPolishActionPerformed
 
     private void btnOperatorOnlyIfPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorOnlyIfPolishActionPerformed
-        writeTextArea(btnOperatorOnlyIfPolish.getText(), txtAreaPolish);
+        writeTextArea(btnOperatorOnlyIfPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnOperatorOnlyIfPolishActionPerformed
 
     private void btnLetterRPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterRPolishActionPerformed
-        writeTextArea(btnLetterRPolish.getText(), txtAreaPolish);
+        writeTextArea(btnLetterRPolish.getText(), txtAreaPolish, txtAreaInfix);
     }//GEN-LAST:event_btnLetterRPolishActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -980,31 +899,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnOperatorOnlyIf;
     private javax.swing.JButton btnOperatorOnlyIfPolish;
     private javax.swing.JButton btnParentesis;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton25;
-    private javax.swing.JButton jButton26;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JMenu jmFile;
     private javax.swing.JMenuBar jmbMain;
     private javax.swing.JMenuItem jmiExit;
