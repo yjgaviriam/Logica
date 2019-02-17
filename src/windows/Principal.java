@@ -43,6 +43,13 @@ public class Principal extends javax.swing.JFrame {
         disableKeyboard();
     }
 
+    /**
+     * Se encarga de adiccionar al text area recibido como parametro el texto
+     * del boton presionado
+     *
+     * @param text Texto del boton presionado
+     * @param textArea Area de texto correspondiente al boton presionado
+     */
     private void writeTextArea(String text, JTextArea textArea) {
         try {
             textArea.getDocument().insertString(textArea.getCaretPosition(), text, null);
@@ -61,24 +68,25 @@ public class Principal extends javax.swing.JFrame {
     private void disableKeyboard() {
 
         // Text area de formula en forma infija
-        txtAreaInfija.addKeyListener(new KeyAdapter() {
+        txtAreaInfix.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() < 112 || e.getKeyChar() > 122) {
+                if (e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) {
                     e.consume();
                 }
             }
         });
 
         // Text area de formula en forma polaca
-        txtAreaPolaca.addKeyListener(new KeyAdapter() {
+        txtAreaPolish.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() < 112 || e.getKeyChar() > 122) {
+                if (e.getKeyChar() != 78 && e.getKeyChar() != 65 && e.getKeyChar() != 75 && e.getKeyChar() != 67 && e.getKeyChar() != 69) {
                     e.consume();
                 }
             }
-        });
+        }
+        );
     }
 
     /**
@@ -186,7 +194,7 @@ public class Principal extends javax.swing.JFrame {
         jButton26 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaInfija = new javax.swing.JTextArea();
+        txtAreaInfix = new javax.swing.JTextArea();
         btnOperatorInclusive = new javax.swing.JButton();
         btnOperatorConjunction = new javax.swing.JButton();
         btnOperatorEntonces = new javax.swing.JButton();
@@ -201,15 +209,32 @@ public class Principal extends javax.swing.JFrame {
         btnLetterW = new javax.swing.JButton();
         btnLetterS = new javax.swing.JButton();
         btnLetterX = new javax.swing.JButton();
-        btnConvertInfija = new javax.swing.JButton();
+        btnConvertInfix = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        btnClear = new javax.swing.JButton();
+        btnClearInfix = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        txtAreaPolaca = new javax.swing.JTextArea();
+        txtAreaPolish = new javax.swing.JTextArea();
+        btnClearPolish = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        btnLetterPPolish = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        btnLetterQPolish = new javax.swing.JButton();
+        btnLetterYPolish = new javax.swing.JButton();
+        btnLetterZPolish = new javax.swing.JButton();
+        btnLetterWPolish = new javax.swing.JButton();
+        btnLetterSPolish = new javax.swing.JButton();
+        btnLetterXPolish = new javax.swing.JButton();
+        btnConvertPolish = new javax.swing.JButton();
+        btnOperatorInclusivePolish = new javax.swing.JButton();
+        btnOperatorConjunctionPolish = new javax.swing.JButton();
+        btnOperatorEntoncesPolish = new javax.swing.JButton();
+        btnOperatorNegationPolish = new javax.swing.JButton();
+        btnOperatorOnlyIfPolish = new javax.swing.JButton();
+        btnLetterRPolish = new javax.swing.JButton();
         jmbMain = new javax.swing.JMenuBar();
         jmFile = new javax.swing.JMenu();
         jmiExit = new javax.swing.JMenuItem();
@@ -269,14 +294,14 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setText("Infija");
 
-        txtAreaInfija.setColumns(20);
-        txtAreaInfija.setFont(new java.awt.Font("Agency FB", 0, 24)); // NOI18N
-        txtAreaInfija.setLineWrap(true);
-        txtAreaInfija.setRows(5);
-        jScrollPane1.setViewportView(txtAreaInfija);
+        txtAreaInfix.setColumns(20);
+        txtAreaInfix.setFont(new java.awt.Font("Consolas", 0, 16)); // NOI18N
+        txtAreaInfix.setLineWrap(true);
+        txtAreaInfix.setRows(5);
+        jScrollPane1.setViewportView(txtAreaInfix);
 
         btnOperatorInclusive.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnOperatorInclusive.setText("( )v( )");
+        btnOperatorInclusive.setText("( ) v ( )");
         btnOperatorInclusive.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnOperatorInclusive.setPreferredSize(new java.awt.Dimension(51, 30));
         btnOperatorInclusive.addActionListener(new java.awt.event.ActionListener() {
@@ -286,7 +311,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnOperatorConjunction.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnOperatorConjunction.setText("()^()");
+        btnOperatorConjunction.setText("( ) ^ ( )");
         btnOperatorConjunction.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnOperatorConjunction.setPreferredSize(new java.awt.Dimension(51, 30));
         btnOperatorConjunction.addActionListener(new java.awt.event.ActionListener() {
@@ -296,7 +321,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnOperatorEntonces.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnOperatorEntonces.setText("()→()");
+        btnOperatorEntonces.setText("( ) → ( )");
         btnOperatorEntonces.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnOperatorEntonces.setPreferredSize(new java.awt.Dimension(51, 30));
         btnOperatorEntonces.addActionListener(new java.awt.event.ActionListener() {
@@ -306,7 +331,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnOperatorNegation.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnOperatorNegation.setText("¬()");
+        btnOperatorNegation.setText("¬( )");
         btnOperatorNegation.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnOperatorNegation.setPreferredSize(new java.awt.Dimension(51, 30));
         btnOperatorNegation.addActionListener(new java.awt.event.ActionListener() {
@@ -316,7 +341,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnOperatorOnlyIf.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnOperatorOnlyIf.setText("()↔()");
+        btnOperatorOnlyIf.setText("( ) ↔ ( )");
         btnOperatorOnlyIf.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnOperatorOnlyIf.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnOperatorOnlyIf.setPreferredSize(new java.awt.Dimension(51, 30));
@@ -400,11 +425,11 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnConvertInfija.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnConvertInfija.setText("Convertir");
-        btnConvertInfija.addActionListener(new java.awt.event.ActionListener() {
+        btnConvertInfix.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnConvertInfix.setText("Convertir");
+        btnConvertInfix.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConvertInfijaActionPerformed(evt);
+                btnConvertInfixActionPerformed(evt);
             }
         });
 
@@ -423,11 +448,11 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Tableaux", jPanel2);
 
-        btnClear.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnClear.setText("Limpiar");
-        btnClear.addActionListener(new java.awt.event.ActionListener() {
+        btnClearInfix.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnClearInfix.setText("Limpiar");
+        btnClearInfix.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearActionPerformed(evt);
+                btnClearInfixActionPerformed(evt);
             }
         });
 
@@ -440,11 +465,148 @@ public class Principal extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setText("Polaca");
 
-        txtAreaPolaca.setColumns(20);
-        txtAreaPolaca.setFont(new java.awt.Font("Agency FB", 0, 24)); // NOI18N
-        txtAreaPolaca.setLineWrap(true);
-        txtAreaPolaca.setRows(5);
-        jScrollPane3.setViewportView(txtAreaPolaca);
+        txtAreaPolish.setColumns(20);
+        txtAreaPolish.setFont(new java.awt.Font("Consolas", 0, 16)); // NOI18N
+        txtAreaPolish.setLineWrap(true);
+        txtAreaPolish.setRows(5);
+        jScrollPane3.setViewportView(txtAreaPolish);
+
+        btnClearPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnClearPolish.setText("Limpiar");
+        btnClearPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearPolishActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel5.setText("Operadores");
+
+        btnLetterPPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterPPolish.setText("p");
+        btnLetterPPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterPPolishActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel6.setText("Formas Atómicas");
+
+        btnLetterQPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterQPolish.setText("q");
+        btnLetterQPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterQPolishActionPerformed(evt);
+            }
+        });
+
+        btnLetterYPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterYPolish.setText("y");
+        btnLetterYPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterYPolishActionPerformed(evt);
+            }
+        });
+
+        btnLetterZPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterZPolish.setText("z");
+        btnLetterZPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterZPolishActionPerformed(evt);
+            }
+        });
+
+        btnLetterWPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterWPolish.setText("w");
+        btnLetterWPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterWPolishActionPerformed(evt);
+            }
+        });
+
+        btnLetterSPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterSPolish.setText("s");
+        btnLetterSPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterSPolishActionPerformed(evt);
+            }
+        });
+
+        btnLetterXPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterXPolish.setText("x");
+        btnLetterXPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterXPolishActionPerformed(evt);
+            }
+        });
+
+        btnConvertPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnConvertPolish.setText("Convertir");
+        btnConvertPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConvertPolishActionPerformed(evt);
+            }
+        });
+
+        btnOperatorInclusivePolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorInclusivePolish.setText("A");
+        btnOperatorInclusivePolish.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorInclusivePolish.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorInclusivePolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOperatorInclusivePolishActionPerformed(evt);
+            }
+        });
+
+        btnOperatorConjunctionPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorConjunctionPolish.setText("K");
+        btnOperatorConjunctionPolish.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorConjunctionPolish.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorConjunctionPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOperatorConjunctionPolishActionPerformed(evt);
+            }
+        });
+
+        btnOperatorEntoncesPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorEntoncesPolish.setText("C");
+        btnOperatorEntoncesPolish.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorEntoncesPolish.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorEntoncesPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOperatorEntoncesPolishActionPerformed(evt);
+            }
+        });
+
+        btnOperatorNegationPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorNegationPolish.setText("N");
+        btnOperatorNegationPolish.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorNegationPolish.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorNegationPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOperatorNegationPolishActionPerformed(evt);
+            }
+        });
+
+        btnOperatorOnlyIfPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnOperatorOnlyIfPolish.setText("E");
+        btnOperatorOnlyIfPolish.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnOperatorOnlyIfPolish.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnOperatorOnlyIfPolish.setPreferredSize(new java.awt.Dimension(51, 30));
+        btnOperatorOnlyIfPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOperatorOnlyIfPolishActionPerformed(evt);
+            }
+        });
+
+        btnLetterRPolish.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnLetterRPolish.setText("r");
+        btnLetterRPolish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLetterRPolishActionPerformed(evt);
+            }
+        });
 
         jmFile.setText("Archivo");
         jmFile.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -467,59 +629,104 @@ public class Principal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(btnOperatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnOperatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOperatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOperatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOperatorEntonces, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel4))
+                                .addGap(360, 360, 360)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(48, 48, 48)
+                                        .addComponent(jLabel3))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(48, 48, 48)
+                                        .addComponent(jLabel6)))
+                                .addGap(77, 77, 77)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel2)))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnLetterW, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnLetterX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLetterY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLetterZ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnLetterP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLetterQ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLetterR, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLetterS, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnConvertInfija, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11)
+                                .addComponent(btnOperatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnOperatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnOperatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorEntonces, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnLetterW, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(btnLetterX, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterY, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterZ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnLetterP, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterQ, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterR, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterS, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnConvertInfix, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnClearInfix, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnOperatorNegationPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnOperatorInclusivePolish, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnOperatorConjunctionPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnOperatorOnlyIfPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnOperatorEntoncesPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnConvertPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnClearPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnLetterWPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(btnLetterXPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterYPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterZPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnLetterPPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterQPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterRPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLetterSPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -527,52 +734,79 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(jLabel3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnOperatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnOperatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnOperatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(8, 8, 8)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnOperatorEntonces, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnOperatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnLetterP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnLetterQ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnLetterR, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnLetterS, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(40, 40, 40)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnLetterW, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnLetterX, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnLetterY, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnLetterZ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnConvertInfija, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnLetterZ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorInclusive, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorConjunction, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnOperatorNegation, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterQ, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterR, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterS, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnParentesis, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnConvertInfix, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnClearInfix, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnOperatorEntonces, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnOperatorOnlyIf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnOperatorNegationPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorInclusivePolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnLetterWPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterXPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterYPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnLetterZPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorConjunctionPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnOperatorOnlyIfPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnLetterPPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterQPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterRPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnLetterSPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnConvertPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnClearPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnOperatorEntoncesPolish, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -581,68 +815,68 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOperatorInclusiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorInclusiveActionPerformed
-        writeTextArea(btnOperatorInclusive.getText().replace(" ", ""), txtAreaInfija);
+        writeTextArea(btnOperatorInclusive.getText().replace(" ", ""), txtAreaInfix);
     }//GEN-LAST:event_btnOperatorInclusiveActionPerformed
 
     private void btnOperatorOnlyIfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorOnlyIfActionPerformed
-        writeTextArea(btnOperatorOnlyIf.getText().replace(" ", ""), txtAreaInfija);
+        writeTextArea(btnOperatorOnlyIf.getText().replace(" ", ""), txtAreaInfix);
     }//GEN-LAST:event_btnOperatorOnlyIfActionPerformed
 
     private void btnOperatorConjunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorConjunctionActionPerformed
-        writeTextArea(btnOperatorConjunction.getText().replace(" ", ""), txtAreaInfija);
+        writeTextArea(btnOperatorConjunction.getText().replace(" ", ""), txtAreaInfix);
     }//GEN-LAST:event_btnOperatorConjunctionActionPerformed
 
     private void btnOperatorNegationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorNegationActionPerformed
-        writeTextArea(btnOperatorNegation.getText().replace(" ", ""), txtAreaInfija);
+        writeTextArea(btnOperatorNegation.getText().replace(" ", ""), txtAreaInfix);
     }//GEN-LAST:event_btnOperatorNegationActionPerformed
 
     private void btnParentesisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnParentesisActionPerformed
-        writeTextArea(btnParentesis.getText().replace(" ", ""), txtAreaInfija);
+        writeTextArea(btnParentesis.getText().replace(" ", ""), txtAreaInfix);
     }//GEN-LAST:event_btnParentesisActionPerformed
 
     private void btnOperatorEntoncesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorEntoncesActionPerformed
-        writeTextArea(btnOperatorEntonces.getText().replace(" ", ""), txtAreaInfija);
+        writeTextArea(btnOperatorEntonces.getText().replace(" ", ""), txtAreaInfix);
     }//GEN-LAST:event_btnOperatorEntoncesActionPerformed
 
-    private void btnConvertInfijaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertInfijaActionPerformed
+    private void btnConvertInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertInfixActionPerformed
         analizarFormulas();
-    }//GEN-LAST:event_btnConvertInfijaActionPerformed
+    }//GEN-LAST:event_btnConvertInfixActionPerformed
 
     private void btnLetterPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPActionPerformed
-        writeTextArea(btnLetterP.getText(), txtAreaInfija);
+        writeTextArea(btnLetterP.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterPActionPerformed
 
     private void btnLetterQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterQActionPerformed
-        writeTextArea(btnLetterQ.getText(), txtAreaInfija);
+        writeTextArea(btnLetterQ.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterQActionPerformed
 
     private void btnLetterRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterRActionPerformed
-        writeTextArea(btnLetterR.getText(), txtAreaInfija);
+        writeTextArea(btnLetterR.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterRActionPerformed
 
     private void btnLetterSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterSActionPerformed
-        writeTextArea(btnLetterS.getText(), txtAreaInfija);
+        writeTextArea(btnLetterS.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterSActionPerformed
 
     private void btnLetterWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterWActionPerformed
-        writeTextArea(btnLetterW.getText(), txtAreaInfija);
+        writeTextArea(btnLetterW.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterWActionPerformed
 
     private void btnLetterXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterXActionPerformed
-        writeTextArea(btnLetterX.getText(), txtAreaInfija);
+        writeTextArea(btnLetterX.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterXActionPerformed
 
     private void btnLetterYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYActionPerformed
-        writeTextArea(btnLetterY.getText(), txtAreaInfija);
+        writeTextArea(btnLetterY.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterYActionPerformed
 
     private void btnLetterZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterZActionPerformed
-        writeTextArea(btnLetterZ.getText(), txtAreaInfija);
+        writeTextArea(btnLetterZ.getText(), txtAreaInfix);
     }//GEN-LAST:event_btnLetterZActionPerformed
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        txtAreaInfija.setText("");
-    }//GEN-LAST:event_btnClearActionPerformed
+    private void btnClearInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearInfixActionPerformed
+        txtAreaInfix.setText("");
+    }//GEN-LAST:event_btnClearInfixActionPerformed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         // TODO add your handling code here:
@@ -652,22 +886,97 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jmiExitActionPerformed
 
+    private void btnClearPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPolishActionPerformed
+        txtAreaPolish.setText("");
+    }//GEN-LAST:event_btnClearPolishActionPerformed
+
+    private void btnLetterYPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYPolishActionPerformed
+        writeTextArea(btnLetterYPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterYPolishActionPerformed
+
+    private void btnLetterPPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPPolishActionPerformed
+        writeTextArea(btnLetterPPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterPPolishActionPerformed
+
+    private void btnLetterQPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterQPolishActionPerformed
+        writeTextArea(btnLetterQPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterQPolishActionPerformed
+
+    private void btnLetterZPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterZPolishActionPerformed
+        writeTextArea(btnLetterZPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterZPolishActionPerformed
+
+    private void btnLetterWPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterWPolishActionPerformed
+        writeTextArea(btnLetterWPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterWPolishActionPerformed
+
+    private void btnLetterSPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterSPolishActionPerformed
+        writeTextArea(btnLetterSPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterSPolishActionPerformed
+
+    private void btnLetterXPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterXPolishActionPerformed
+        writeTextArea(btnLetterXPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterXPolishActionPerformed
+
+    private void btnConvertPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertPolishActionPerformed
+
+    }//GEN-LAST:event_btnConvertPolishActionPerformed
+
+    private void btnOperatorInclusivePolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorInclusivePolishActionPerformed
+        writeTextArea(btnOperatorInclusivePolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnOperatorInclusivePolishActionPerformed
+
+    private void btnOperatorConjunctionPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorConjunctionPolishActionPerformed
+        writeTextArea(btnOperatorConjunctionPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnOperatorConjunctionPolishActionPerformed
+
+    private void btnOperatorEntoncesPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorEntoncesPolishActionPerformed
+        writeTextArea(btnOperatorEntoncesPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnOperatorEntoncesPolishActionPerformed
+
+    private void btnOperatorNegationPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorNegationPolishActionPerformed
+        writeTextArea(btnOperatorNegationPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnOperatorNegationPolishActionPerformed
+
+    private void btnOperatorOnlyIfPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorOnlyIfPolishActionPerformed
+        writeTextArea(btnOperatorOnlyIfPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnOperatorOnlyIfPolishActionPerformed
+
+    private void btnLetterRPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterRPolishActionPerformed
+        writeTextArea(btnLetterRPolish.getText(), txtAreaPolish);
+    }//GEN-LAST:event_btnLetterRPolishActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnConvertInfija;
+    private javax.swing.JButton btnClearInfix;
+    private javax.swing.JButton btnClearPolish;
+    private javax.swing.JButton btnConvertInfix;
+    private javax.swing.JButton btnConvertPolish;
     private javax.swing.JButton btnLetterP;
+    private javax.swing.JButton btnLetterPPolish;
     private javax.swing.JButton btnLetterQ;
+    private javax.swing.JButton btnLetterQPolish;
     private javax.swing.JButton btnLetterR;
+    private javax.swing.JButton btnLetterRPolish;
     private javax.swing.JButton btnLetterS;
+    private javax.swing.JButton btnLetterSPolish;
     private javax.swing.JButton btnLetterW;
+    private javax.swing.JButton btnLetterWPolish;
     private javax.swing.JButton btnLetterX;
+    private javax.swing.JButton btnLetterXPolish;
     private javax.swing.JButton btnLetterY;
+    private javax.swing.JButton btnLetterYPolish;
     private javax.swing.JButton btnLetterZ;
+    private javax.swing.JButton btnLetterZPolish;
     private javax.swing.JButton btnOperatorConjunction;
+    private javax.swing.JButton btnOperatorConjunctionPolish;
     private javax.swing.JButton btnOperatorEntonces;
+    private javax.swing.JButton btnOperatorEntoncesPolish;
     private javax.swing.JButton btnOperatorInclusive;
+    private javax.swing.JButton btnOperatorInclusivePolish;
     private javax.swing.JButton btnOperatorNegation;
+    private javax.swing.JButton btnOperatorNegationPolish;
     private javax.swing.JButton btnOperatorOnlyIf;
+    private javax.swing.JButton btnOperatorOnlyIfPolish;
     private javax.swing.JButton btnParentesis;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -688,6 +997,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
@@ -695,7 +1006,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jmFile;
     private javax.swing.JMenuBar jmbMain;
     private javax.swing.JMenuItem jmiExit;
-    private javax.swing.JTextArea txtAreaInfija;
-    private javax.swing.JTextArea txtAreaPolaca;
+    private javax.swing.JTextArea txtAreaInfix;
+    private javax.swing.JTextArea txtAreaPolish;
     // End of variables declaration//GEN-END:variables
 }
