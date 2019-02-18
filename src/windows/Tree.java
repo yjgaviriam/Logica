@@ -5,56 +5,46 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import logic.Node;
 
-
 public class Tree extends JPanel {
 
-    Color color = Color.GREEN;
-
-    Node root;
+    private Node root;
 
     public Tree(Node root) {
-
         this.root = root;
     }
 
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        dibujarSubformula(this.root, 350, 40, 90, 55, this, graphics, Color.ORANGE);
+        dibujarSubformula(this.root, 350, 40, 90, 55, graphics, Color.ORANGE, true);
     }
 
-    public void dibujarSubformula(Node act, int x, int y, int x2, int y2, JPanel jPanel, Graphics g, Color colorP) {
+    public void dibujarSubformula(Node nodeActual, int x, int y, int x2, int y2, Graphics g, Color colorP, boolean isFirstNode) {
 
-        if (act != null) {
+        if (nodeActual != null) {
 
-            //g.setBackground(Color.gray);
-            g.setColor(Color.BLACK);
-            g.drawLine(x + 15, y + 3, x2 + 15, y2 + 30);
+            if (!isFirstNode) {
+                g.setColor(Color.BLACK);
+                g.drawLine(x + 15, y + 3, x2 + 15, y2 + 30);
+            }
 
-            g.setColor(colorP);
-
-            // g.setBackground(colorP);
             //el dibujo del circulo dependiendo la cantidad de letras y simbolos
             g.setColor(colorP);
             g.fillOval(x, y, 30, 30);
             g.setColor(Color.BLACK);
-            g.drawString("" + act.getValue(), (x) + 11, (y) + 20);
+            g.drawString("" + nodeActual.getValue(), (x) + 11, (y) + 20);
 
-            System.out.println("0 y 2");
-
-            if (act.getNegation() != null) {
-                System.out.println("Dibujar getNegation");
-                dibujarSubformula(act.getNegation(), (x) - (anchoX(altura(act))), y + 100, x, y, jPanel, g, colorP);
+            if (nodeActual.getNegation() != null) {
+                dibujarSubformula(nodeActual.getNegation(), (x) - (anchoX(altura(nodeActual))), y + 100, x, y, g, colorP, false);
             }
 
-            if (act.getLeft() != null) {
-                System.out.println("Dibujar izquierdo");
-                dibujarSubformula(act.getLeft(), (x) - (anchoX(altura(act))), y + 100, x, y, jPanel, g, colorP);
+            if (nodeActual.getLeft() != null) {
+                dibujarSubformula(nodeActual.getLeft(), (x) - (anchoX(altura(nodeActual))), y + 100, x, y, g, colorP, false);
 
             }
 
-            if (act.getRight() != null) {
-                dibujarSubformula(act.getRight(), (x) + (anchoX(altura(act))), y + 100, x, y, jPanel, g, colorP);
+            if (nodeActual.getRight() != null) {
+                dibujarSubformula(nodeActual.getRight(), (x) + (anchoX(altura(nodeActual))), y + 100, x, y, g, colorP, false);
             }
 
         }

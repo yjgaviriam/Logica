@@ -248,11 +248,8 @@ public class Convert {
         return value;
     }
 
-    private static void imprimir(Node node) {
+    /*private static void imprimir(Node node) {
 
-        /*System.out.println("Izquierda " + node.getLeft().getValue());
-        System.out.println("Derecha " + node.getLeft().getValue());
-        System.out.println("negation " + node.getLeft().getValue());*/
         System.out.println("Nodo " + node.getValue());
 
         if (node.getNegation() != null) {
@@ -272,7 +269,7 @@ public class Convert {
             imprimir(node.getRight());
 
         }
-    }
+    }*/
 
     private static void convertInfixToPolish(String infixFormula, Node nodeActual, int orientation) {
 
@@ -282,8 +279,6 @@ public class Convert {
             characters.add(infixFormula.charAt(0));
             Node node = new Node("" + infixFormula.charAt(0));
             if (nodeActual == null) {
-                System.out.println("root");
-
                 root = node;
             } else {
                 switch (orientation) {
@@ -307,12 +302,10 @@ public class Convert {
 
             characters.add('N');
 
-            Node node = new Node("N");
+            Node node = new Node("¬");
 
             if (nodeActual == null) {
                 root = node;
-                System.out.println("root");
-
             } else {
                 switch (orientation) {
                     case 0:
@@ -340,11 +333,9 @@ public class Convert {
             //System.out.println(operatorConvert);
             characters.add(operatorConvert);
 
-            Node node = new Node("" + operatorConvert);
+            Node node = new Node("" + infixFormula.charAt(positionOperatorPrincipal));
 
             if (nodeActual == null) {
-                System.out.println("root");
-
                 root = node;
             } else {
                 switch (orientation) {
@@ -358,7 +349,6 @@ public class Convert {
                         nodeActual.setNegation(node);
                         break;
                 }
-
             }
 
             // Se toma la siguiente parte de la infixFormula a trabajar
