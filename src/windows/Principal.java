@@ -119,7 +119,7 @@ public class Principal extends javax.swing.JFrame {
      * @param txtArea Es la caja de la cual se va tomar la formula
      * @param typeFormula Indica si es formula en forma infija o polaca
      */
-    private void checkFormulas(JTextArea txtArea, int typeFormula) {
+    private void convertFormulas(JTextArea txtArea, int typeFormula) {
 
         // Tomamos la formula de la caja recibida por parametro
         String formula = txtArea.getText().replace(" ", "");
@@ -129,7 +129,7 @@ public class Principal extends javax.swing.JFrame {
 
             // Se valida que contenga al menos 5 atomos la formula
             if (Convert.validateNumberAtoms(formula)) {
-
+                Convert.convertFormula(formula, typeFormula);
             } else {
                 JOptionPane.showMessageDialog(this, "Debe Ingresar Mínimo 5 \nFormas Proposicionales Atómicas");
             }
@@ -757,7 +757,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOperatorEntoncesActionPerformed
 
     private void btnConvertInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertInfixActionPerformed
-        checkFormulas(txtAreaInfix, Convert.INFIX_FORMULA);
+        convertFormulas(txtAreaInfix, Convert.INFIX_FORMULA);
     }//GEN-LAST:event_btnConvertInfixActionPerformed
 
     private void btnLetterPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterPActionPerformed
@@ -837,7 +837,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLetterXPolishActionPerformed
 
     private void btnConvertPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertPolishActionPerformed
-        checkFormulas(txtAreaPolish, Convert.POLISH_FORMULA);
+        convertFormulas(txtAreaPolish, Convert.POLISH_FORMULA);
     }//GEN-LAST:event_btnConvertPolishActionPerformed
 
     private void btnOperatorInclusivePolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorInclusivePolishActionPerformed
