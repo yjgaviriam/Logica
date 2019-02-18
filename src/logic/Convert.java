@@ -25,6 +25,12 @@ public class Convert {
      */
     public static final int NUMBER_ATOMS = 0;
 
+    public static String prefixFormula;
+
+    public static ArrayList<Character> characters;
+
+    public static Node root;
+
     /**
      * Se encarga de validar que la formula tenga la cantidad de atomos
      * especificados en el requerimiento
@@ -218,25 +224,166 @@ public class Convert {
 
     public static String convertFormula(String formula, int typeFormula) {
 
-        String value = convertInfixToPolish(formula);
+        characters = new ArrayList<>();
 
+        convertInfixToPolish(formula, null, 0);
+
+        String value = "";
+
+        prefixFormula = "";
+
+        for (int i = 0; i < characters.size(); i++) {
+            if (isOperatorPolishFormula(characters.get(i))) {
+                prefixFormula += convertOperatorPolishToInfix(characters.get(i));
+            } else {
+                prefixFormula += characters.get(i);
+            }
+            
+            value += characters.get(i);
+        }
+
+        //imprimir(root);
         System.out.println("Formula traducida " + value);
 
         return value;
     }
 
-    private static String convertInfixToPolish(String infixFormula) {
+    private static void imprimir(Node node) {
+
+        /*System.out.println("Izquierda " + node.getLeft().getValue());
+        System.out.println("Derecha " + node.getLeft().getValue());
+        System.out.println("negation " + node.getLeft().getValue());*/
+        System.out.println("Nodo " + node.getValue());
+
+        if (node.getNegation() != null) {
+            System.out.println("Directo ->");
+
+            imprimir(node.getNegation());
+        }
+
+        if (node.getLeft() != null) {
+            System.out.println("Izquierda ->");
+            imprimir(node.getLeft());
+
+        }
+
+        if (node.getRight() != null) {
+            System.out.println("Derecho ->");
+            imprimir(node.getRight());
+
+        }
+    }
+
+    private static void convertInfixToPolish(String infixFormula, Node nodeActual, int orientation) {
+
+        // Casos basicos para determinar si esta o no bien formada la formula
+        if (infixFormula.length() == 1) {
+            //System.out.println(infixFormula.charAt(0));
+            characters.add(infixFormula.charAt(0));
+            Node node = new Node("" + infixFormula.charAt(0));
+            if (nodeActual == null) {
+                System.out.println("root");
+
+                root = node;
+            } else {
+                switch (orientation) {
+                    case 0:
+                        nodeActual.setLeft(node);
+                        break;
+                    case 1:
+                        nodeActual.setRight(node);
+                        break;
+                    default:
+                        nodeActual.setNegation(node);
+                        break;
+                }
+            }
+        }
+
+        // Cuando comienza por negado ¬
+        if (infixFormula.charAt(0) == '¬') {
+            String auxFormula = infixFormula.substring(2, infixFormula.length() - 1);
+            //System.out.println("N");
+
+            characters.add('N');
+
+            Node node = new Node("N");
+
+            if (nodeActual == null) {
+                root = node;
+                System.out.println("root");
+
+            } else {
+                switch (orientation) {
+                    case 0:
+                        nodeActual.setLeft(node);
+                        break;
+                    case 1:
+                        nodeActual.setRight(node);
+                        break;
+                    default:
+                        nodeActual.setNegation(node);
+                        break;
+                }
+
+            }
+
+            convertInfixToPolish(auxFormula, node, -1);
+        } else if (infixFormula.charAt(0) == '(') { // Cuando comienza por (
+
+            // Tomamos la posicion del operador principal
+            int positionOperatorPrincipal = searchPositionOperatorPrincipal(infixFormula);
+
+            // Convertimos el operador
+            char operatorConvert = convertOperatorInfixToPolish(infixFormula.charAt(positionOperatorPrincipal));
+
+            //System.out.println(operatorConvert);
+            characters.add(operatorConvert);
+
+            Node node = new Node("" + operatorConvert);
+
+            if (nodeActual == null) {
+                System.out.println("root");
+
+                root = node;
+            } else {
+                switch (orientation) {
+                    case 0:
+                        nodeActual.setLeft(node);
+                        break;
+                    case 1:
+                        nodeActual.setRight(node);
+                        break;
+                    default:
+                        nodeActual.setNegation(node);
+                        break;
+                }
+
+            }
+
+            // Se toma la siguiente parte de la infixFormula a trabajar
+            String auxFormula = infixFormula.substring(1, positionOperatorPrincipal - 1);
+            String auxFormula2 = infixFormula.substring(positionOperatorPrincipal + 2, infixFormula.length() - 1);
+
+            convertInfixToPolish(auxFormula, node, 0);
+            convertInfixToPolish(auxFormula2, node, 1);
+        }
+    }
+
+    /*private static String convertInfixToPolish(String infixFormula) {
 
         // Casos basicos para determinar si esta o no bien formada la formula
         if (infixFormula.length() == 1) {
             System.out.println(infixFormula.charAt(0));
+            characters.add(infixFormula.charAt(0));
             return "" + infixFormula.charAt(0);
         }
 
         // Cuando comienza por negado ¬
         if (infixFormula.charAt(0) == '¬') {
             String auxFormula = infixFormula.substring(2, infixFormula.length() - 1);
-            System.out.println("N" + convertInfixToPolish(auxFormula));
+            System.out.println("N");
+            characters.add(infixFormula.charAt(0));
             return "N" + convertInfixToPolish(auxFormula);
         } else if (infixFormula.charAt(0) == '(') { // Cuando comienza por (
 
@@ -247,6 +394,7 @@ public class Convert {
             char operatorConvert = convertOperatorInfixToPolish(infixFormula.charAt(positionOperatorPrincipal));
 
             System.out.println(operatorConvert);
+            characters.add(operatorConvert);
 
             // Se toma la siguiente parte de la infixFormula a trabajar
             String auxFormula = infixFormula.substring(1, positionOperatorPrincipal - 1);
@@ -256,8 +404,26 @@ public class Convert {
         }
 
         return "";
-    }
+    }*/
+    
+    private static char convertOperatorPolishToInfix(char character)  {
 
+        switch (character) {
+            case 'N':
+                return '¬';
+            case 'C':
+                return '\u2192';
+            case 'E':
+                return '\u2194';
+            case 'A':
+                return 'v';
+            case 'K':
+                return '^';
+            default:
+                return ' ';
+        }
+    }
+    
     private static char convertOperatorInfixToPolish(char character) {
 
         switch (character) {
