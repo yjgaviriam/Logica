@@ -138,7 +138,7 @@ public class Principal extends javax.swing.JFrame {
                 try {
                     
                     
-                    PrefixFormula prefixFormula = new PrefixFormula(Convert.prefixFormula);
+                    PrefixFormula prefixFormula = new PrefixFormula(Convert.prefixFormula, Convert.formulas);
                     prefixFormula.setLocationByPlatform(true);
                     prefixFormula.setVisible(true);
 

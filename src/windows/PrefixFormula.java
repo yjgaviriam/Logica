@@ -5,6 +5,8 @@
  */
 package windows;
 
+import java.util.ArrayList;
+import logic.Formula;
 
 /**
  * Interfaz grafica para explicar pasos
@@ -16,15 +18,65 @@ public class PrefixFormula extends javax.swing.JFrame {
 
     /**
      * Creates new form Tree
+     *
      * @param prefixFormula
+     * @param formulas
      */
-    public PrefixFormula(String prefixFormula) {
+    public PrefixFormula(String prefixFormula, ArrayList<Formula> formulas) {
         initComponents();
         txtPrefixFormula.setText(prefixFormula);
+        showSteps(formulas);
     }
 
-    
-    
+    private void showSteps(ArrayList<Formula> formulas) {
+
+        String steps = "";
+        String formula = "";
+
+        for (int i = 0; i < formulas.size(); i++) {
+
+            if (formulas.get(i).isIsOperator()) {
+                switch (formulas.get(i).getOrientation()) {
+                    case -1:
+                        steps += "";
+                        break;
+                    case 0:
+                        steps += "Continuamos a la izquierda. ";
+                        break;
+                    case 1:
+                        steps += "Continuamos a la derecha. ";
+                        break;
+                    default:
+                        break;
+                }
+
+                steps += "De la formula " + formulas.get(i).getText() + "\nObtenemos el operador principal ";
+                steps += " [[ " + formulas.get(i).getValue() + " ]] \n";
+                formula += formulas.get(i).getValue();
+                steps += "Con esto tenemos que nuestra formula en prefijo va asi: " + formula + " \n\n";
+            } else {
+                switch (formulas.get(i).getOrientation()) {
+                    case -1:
+                        steps += "Tomamos el atomo negado ";
+                        break;
+                    case 0:
+                        steps += "Tomamos el atomo ubicado a la izquierda ";
+                        break;
+                    case 1:
+                        steps += "Tomamos el atomo ubicado a la derecha ";
+                        break;
+                    default:
+                        break;
+                }
+                steps += " [[ " + formulas.get(i).getValue() + " ]] \n";
+                formula += formulas.get(i).getValue();
+                steps += "Con esto tenemos que nuestra formula en prefijo va asi " + formula + " \n\n";
+            }
+        }
+
+        txtArea.setText(steps);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,10 +120,9 @@ public class PrefixFormula extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPrefixFormula))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 910, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -85,7 +136,7 @@ public class PrefixFormula extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(0, 2, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(txtPrefixFormula))
                 .addContainerGap())
         );

@@ -27,7 +27,7 @@ public class Convert {
 
     public static String prefixFormula;
 
-    public static ArrayList<Character> characters;
+    public static ArrayList<Formula> formulas;
 
     public static Node root;
 
@@ -114,6 +114,10 @@ public class Convert {
 
     private static boolean isOperatorPolishFormula(char character) {
         return (character == 'A' || character == 'E' || character == 'C' || character == 'K' || character == 'N');
+    }
+
+    private static boolean isOperatorInfixFormula(char character) {
+        return (character == 'v' || character == '\u2194' || character == '\u2192' || character == '^' || character == '¬');
     }
 
     private static boolean isAtom(char character) {
@@ -224,7 +228,7 @@ public class Convert {
 
     public static String convertFormula(String formula, int typeFormula) {
 
-        characters = new ArrayList<>();
+        formulas = new ArrayList<>();
 
         convertInfixToPolish(formula, null, 0);
 
@@ -232,14 +236,15 @@ public class Convert {
 
         prefixFormula = "";
 
-        for (int i = 0; i < characters.size(); i++) {
-            if (isOperatorPolishFormula(characters.get(i))) {
-                prefixFormula += convertOperatorPolishToInfix(characters.get(i));
+        for (int i = 0; i < formulas.size(); i++) {
+            if (isOperatorInfixFormula(formulas.get(i).getValue())) {
+                value += convertOperatorInfixToPolish(formulas.get(i).getValue());
             } else {
-                prefixFormula += characters.get(i);
+                value += (formulas.get(i).getValue());
             }
-            
-            value += characters.get(i);
+
+            prefixFormula += formulas.get(i).getValue();
+
         }
 
         //imprimir(root);
@@ -270,26 +275,30 @@ public class Convert {
 
         }
     }*/
-
     private static void convertInfixToPolish(String infixFormula, Node nodeActual, int orientation) {
 
         // Casos basicos para determinar si esta o no bien formada la formula
         if (infixFormula.length() == 1) {
             //System.out.println(infixFormula.charAt(0));
-            characters.add(infixFormula.charAt(0));
+            Formula f = new Formula(infixFormula.charAt(0), infixFormula, false);
+            formulas.add(f);
             Node node = new Node("" + infixFormula.charAt(0));
             if (nodeActual == null) {
                 root = node;
+                f.setOrientation(0);
             } else {
                 switch (orientation) {
                     case 0:
                         nodeActual.setLeft(node);
+                        f.setOrientation(orientation);
                         break;
                     case 1:
                         nodeActual.setRight(node);
+                        f.setOrientation(orientation);
                         break;
                     default:
                         nodeActual.setNegation(node);
+                        f.setOrientation(orientation);
                         break;
                 }
             }
@@ -298,24 +307,29 @@ public class Convert {
         // Cuando comienza por negado ¬
         if (infixFormula.charAt(0) == '¬') {
             String auxFormula = infixFormula.substring(2, infixFormula.length() - 1);
-            //System.out.println("N");
 
-            characters.add('N');
+            Formula f = new Formula('¬', infixFormula, true);
+
+            formulas.add(f);
 
             Node node = new Node("¬");
 
             if (nodeActual == null) {
                 root = node;
+                f.setOrientation(-1);
             } else {
                 switch (orientation) {
                     case 0:
                         nodeActual.setLeft(node);
+                        f.setOrientation(orientation);
                         break;
                     case 1:
                         nodeActual.setRight(node);
+                        f.setOrientation(orientation);
                         break;
                     default:
                         nodeActual.setNegation(node);
+                        f.setOrientation(orientation);
                         break;
                 }
 
@@ -328,25 +342,30 @@ public class Convert {
             int positionOperatorPrincipal = searchPositionOperatorPrincipal(infixFormula);
 
             // Convertimos el operador
-            char operatorConvert = convertOperatorInfixToPolish(infixFormula.charAt(positionOperatorPrincipal));
-
+            //char operatorConvert = convertOperatorInfixToPolish(infixFormula.charAt(positionOperatorPrincipal));
             //System.out.println(operatorConvert);
-            characters.add(operatorConvert);
+            Formula f = new Formula(infixFormula.charAt(positionOperatorPrincipal), infixFormula, true);
+            formulas.add(f);
 
             Node node = new Node("" + infixFormula.charAt(positionOperatorPrincipal));
 
             if (nodeActual == null) {
                 root = node;
+                f.setOrientation(1);
             } else {
                 switch (orientation) {
                     case 0:
                         nodeActual.setLeft(node);
+                        f.setOrientation(orientation);
                         break;
                     case 1:
                         nodeActual.setRight(node);
+                        f.setOrientation(orientation);
                         break;
                     default:
                         nodeActual.setNegation(node);
+                        f.setOrientation(orientation);
+
                         break;
                 }
             }
@@ -395,8 +414,7 @@ public class Convert {
 
         return "";
     }*/
-    
-    private static char convertOperatorPolishToInfix(char character)  {
+    private static char convertOperatorPolishToInfix(char character) {
 
         switch (character) {
             case 'N':
@@ -413,7 +431,7 @@ public class Convert {
                 return ' ';
         }
     }
-    
+
     private static char convertOperatorInfixToPolish(char character) {
 
         switch (character) {
