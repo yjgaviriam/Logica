@@ -23,13 +23,92 @@ public class Convert {
     /**
      * Cantidad de atomos que debe tener la formula
      */
-    public static final int NUMBER_ATOMS = 0;
+    public static final int NUMBER_ATOMS = 5;
 
+    /**
+     * Almacena la formula en prefijo
+     */
     public static String prefixFormula;
 
+    /**
+     * Contiene la lista de formulas
+     */
     public static ArrayList<Formula> formulas;
 
+    /**
+     * Contiene la lista de formulas
+     */
+    public static ArrayList<Character> charactersFormulas;
+
+    /**
+     * Nodo con toda la estructura del arbol de la formula
+     */
     public static Node root;
+
+    /**
+     * Se encarga de llamar las funciones de validacion de que la formula este
+     * bien formada y retornar este valor a la interfaz grafica
+     *
+     * @param formula Formula a analizar
+     * @param typeFormula Forma en la que se envio la formula
+     * @return true si esta bien formada, false en caso contrario
+     */
+    public static boolean checkFormula(String formula, int typeFormula) {
+        if (typeFormula == POLISH_FORMULA) {
+            charactersFormulas = new ArrayList<>();
+            // Casos basicos para determinar si esta o no bien formada la formula
+            if (formula.length() == 1 && isAtom(formula.charAt(0))) {
+                return true;
+            } else if (formula.length() == 2 && (formula.charAt(0) == 'N' && (isAtom(formula.charAt(1))))) {
+                return true;
+            } else if ((formula.length() == 2 && (formula.charAt(0) != 'N')) || formula.length() == 0) {
+                return false;
+            } else if (formula.length() > 1 && !isOperatorPolishFormula(formula.charAt(0))) {
+                // revisar
+                return false;
+            } else if (formula.length() == 1 && isOperatorPolishFormula(formula.charAt(0))) {
+                return false;
+            }
+
+            return validatePolishFormula(formula, formula.length() - 1);
+        } else {
+            return validateInfixFormula(formula);
+        }
+    }
+
+    /**
+     * Indica si un operador recibido como parametro es un operador en forma
+     * polaca
+     *
+     * @param character Operador a validar
+     * @return true si es un operador de formula en forma polaca, false en caso
+     * contrario
+     */
+    private static boolean isOperatorPolishFormula(char character) {
+        return (character == 'A' || character == 'E' || character == 'C' || character == 'K' || character == 'N');
+    }
+
+    /**
+     * Indica si un operador recibido como parametro es un operador en forma
+     * infija
+     *
+     * @param character Operador a validar
+     * @return true si es un operador de formula en forma infija, false en caso
+     * contrario
+     */
+    private static boolean isOperatorInfixFormula(char character) {
+        return (character == 'v' || character == '\u2194' || character == '\u2192' || character == '^' || character == '¬');
+    }
+
+    /**
+     * Indica si un operador recibido como parametro es un atomo
+     *
+     * @param character Operador a validar
+     * @return true si es un atomo, false en caso contrario
+     */
+    private static boolean isAtom(char character) {
+        return (character == 'p' || character == 'r' || character == 'q' || character == 's' || character == 'w' || character == 'x' || character == 'y' || character == 'z');
+    }
 
     /**
      * Se encarga de validar que la formula tenga la cantidad de atomos
@@ -73,55 +152,36 @@ public class Convert {
     }
 
     /**
-     * Se encarga de llamar las funciones de validacion de que la formula este
-     * bien formada y retornar este valor a la interfaz grafica
+     * Se encarga de validar que una formula en forma polaca esta bien formada
      *
-     * @param formula Formula a analizar
-     * @param typeFormula Forma en la que se envio la formula
+     * @param formula Formula en forma polaca a probar
      * @return true si esta bien formada, false en caso contrario
      */
-    public static boolean checkFormula(String formula, int typeFormula) {
-        if (typeFormula == POLISH_FORMULA) {
+    private static boolean validatePolishFormula(String formula, int i) {
+
+        // Cuando termino de recorrer la formula
+        if (i == -1) {
+            return charactersFormulas.size() == 1;
+        } else if (isOperatorPolishFormula(formula.charAt(i)) && charactersFormulas.size() < 2) {
+            System.err.println("Error con el binario " + formula.charAt(i));
+            return false;
+        }
+        
+        if(isOperatorPolishFormula(formula.charAt(i))) {
+            charactersFormulas.remove(0);
+            charactersFormulas.remove(0);
+        }
+        
+        
+        charactersFormulas.add('F');
+        
+        
+        /*if (formula.charAt(0) == 'N') {
             return validatePolishFormula(formula);
-        } else {
-            return validateInfixFormula(formula);
-        }
-    }
-
-    private static boolean validatePolishFormula(String formula) {
-
-        // Casos basicos para determinar si esta o no bien formada la formula
-        if (formula.length() == 1 && isAtom(formula.charAt(0))) {
-            return true;
-        } else if (formula.length() == 2 && (formula.charAt(0) == 'N' && (isAtom(formula.charAt(1))))) {
-            return true;
-        } else if ((formula.length() == 2 && (formula.charAt(0) != 'N')) || formula.length() == 0) {
-            return false;
-        } else if (formula.length() > 1 && !isOperatorPolishFormula(formula.charAt(0))) {
-            // revisar
-            return false;
-        } else if (formula.length() == 1 && isOperatorPolishFormula(formula.charAt(0))) {
-            return false;
-        }
-
-        if (formula.charAt(0) == 'N') {
-            return validatePolishFormula(formula);
-
-        }
+        }*/
+        validatePolishFormula(formula, i -1);
 
         return true;
-    }
-
-    private static boolean isOperatorPolishFormula(char character) {
-        return (character == 'A' || character == 'E' || character == 'C' || character == 'K' || character == 'N');
-    }
-
-    private static boolean isOperatorInfixFormula(char character) {
-        return (character == 'v' || character == '\u2194' || character == '\u2192' || character == '^' || character == '¬');
-    }
-
-    private static boolean isAtom(char character) {
-        return (character == 'p' || character == 'r' || character == 'q' || character == 's' || character == 'w' || character == 'x' || character == 'y' || character == 'z');
     }
 
     /**
@@ -226,16 +286,47 @@ public class Convert {
         return position;
     }
 
+    /**
+     * Funcion de convertir una formula segun el tipo de forma recibido
+     *
+     * @param formula Formula a convertir
+     * @param typeFormula Forma en la que se encuentra la formula a convertir
+     * @return La formula convertida
+     */
     public static String convertFormula(String formula, int typeFormula) {
+        if (typeFormula == POLISH_FORMULA) {
+            return convertPolishToInfix(formula);
+        } else {
+            return convertInfixToPolish(formula);
+        }
+    }
 
+    private static String convertPolishToInfix(String formula) {
+
+        return "";
+    }
+
+    /**
+     * Se encarga de llamar la funcion recursiva que convierte la formula y arma
+     * la respuesta
+     *
+     * @param formula Formula en forma infija
+     * @return Formula en forma polaca
+     */
+    private static String convertInfixToPolish(String formula) {
+        // Reiniciamos el listado de formulas
         formulas = new ArrayList<>();
 
+        // Convertimos la formula
         convertInfixToPolish(formula, null, 0);
 
+        // Formula convertida
         String value = "";
 
+        // Reiniciamos el valor de la formula en forma prefija
         prefixFormula = "";
 
+        // Recorremos el listado de formulas para formar la formula en forma prefija
         for (int i = 0; i < formulas.size(); i++) {
             if (isOperatorInfixFormula(formulas.get(i).getValue())) {
                 value += convertOperatorInfixToPolish(formulas.get(i).getValue());
@@ -244,37 +335,18 @@ public class Convert {
             }
 
             prefixFormula += formulas.get(i).getValue();
-
         }
-
-        //imprimir(root);
-        System.out.println("Formula traducida " + value);
 
         return value;
     }
 
-    /*private static void imprimir(Node node) {
-
-        System.out.println("Nodo " + node.getValue());
-
-        if (node.getNegation() != null) {
-            System.out.println("Directo ->");
-
-            imprimir(node.getNegation());
-        }
-
-        if (node.getLeft() != null) {
-            System.out.println("Izquierda ->");
-            imprimir(node.getLeft());
-
-        }
-
-        if (node.getRight() != null) {
-            System.out.println("Derecho ->");
-            imprimir(node.getRight());
-
-        }
-    }*/
+    /**
+     * Convierte la formula infija a polaca de forma recursiva, crea el arbol
+     *
+     * @param infixFormula Formula infija a convertir
+     * @param nodeActual Nodo del arbol que se esta operando
+     * @param orientation Direccion hacia donde va el siguiente nodo
+     */
     private static void convertInfixToPolish(String infixFormula, Node nodeActual, int orientation) {
 
         // Casos basicos para determinar si esta o no bien formada la formula
@@ -365,7 +437,6 @@ public class Convert {
                     default:
                         nodeActual.setNegation(node);
                         f.setOrientation(orientation);
-
                         break;
                 }
             }
@@ -376,6 +447,54 @@ public class Convert {
 
             convertInfixToPolish(auxFormula, node, 0);
             convertInfixToPolish(auxFormula2, node, 1);
+        }
+    }
+
+    /**
+     * Convierte un operador binario de forma infija a polaca
+     *
+     * @param character Operador a convertir
+     * @return El operador convertido
+     */
+    private static char convertOperatorInfixToPolish(char character) {
+
+        switch (character) {
+            case '¬':
+                return 'N';
+            case '\u2192':
+                return 'C';
+            case '\u2194':
+                return 'E';
+            case 'v':
+                return 'A';
+            case '^':
+                return 'K';
+            default:
+                return ' ';
+        }
+    }
+
+    /**
+     * Convierte un operador binario de forma polaca a infija
+     *
+     * @param character Operador a convertir
+     * @return El operador convertido
+     */
+    private static char convertOperatorPolishToInfix(char character) {
+
+        switch (character) {
+            case 'N':
+                return '¬';
+            case 'C':
+                return '\u2192';
+            case 'E':
+                return '\u2194';
+            case 'A':
+                return 'v';
+            case 'K':
+                return '^';
+            default:
+                return ' ';
         }
     }
 
@@ -414,39 +533,26 @@ public class Convert {
 
         return "";
     }*/
-    private static char convertOperatorPolishToInfix(char character) {
+ /*private static void imprimir(Node node) {
 
-        switch (character) {
-            case 'N':
-                return '¬';
-            case 'C':
-                return '\u2192';
-            case 'E':
-                return '\u2194';
-            case 'A':
-                return 'v';
-            case 'K':
-                return '^';
-            default:
-                return ' ';
+        System.out.println("Nodo " + node.getValue());
+
+        if (node.getNegation() != null) {
+            System.out.println("Directo ->");
+
+            imprimir(node.getNegation());
         }
-    }
 
-    private static char convertOperatorInfixToPolish(char character) {
+        if (node.getLeft() != null) {
+            System.out.println("Izquierda ->");
+            imprimir(node.getLeft());
 
-        switch (character) {
-            case '¬':
-                return 'N';
-            case '\u2192':
-                return 'C';
-            case '\u2194':
-                return 'E';
-            case 'v':
-                return 'A';
-            case '^':
-                return 'K';
-            default:
-                return ' ';
         }
-    }
+
+        if (node.getRight() != null) {
+            System.out.println("Derecho ->");
+            imprimir(node.getRight());
+
+        }
+    }*/
 }

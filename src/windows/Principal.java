@@ -1,6 +1,5 @@
 package windows;
 
-import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -11,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import logic.Convert;
-import logic.Node;
 
 /**
  * Ventana principal de la aplicación

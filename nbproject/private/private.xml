@@ -4,7 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/windows/Principal.java</file>
-            <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/main/ApplicationFL.java</file>
+            <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/windows/Tree.java</file>
+            <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/windows/PrefixFormula.java</file>
+            <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/logic/Formula.java</file>
+            <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/logic/Convert.java</file>
+            <file>file:/C:/Users/xJoni/Documents/NetBeansProjects/Application-FL/src/logic/Node.java</file>
         </group>
     </open-files>
 </project-private>

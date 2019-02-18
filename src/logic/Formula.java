@@ -40,7 +40,5 @@ public class Formula {
 
     public void setOrientation(int orientation) {
         this.orientation = orientation;
-    }
-    
-    
+    }    
 }
