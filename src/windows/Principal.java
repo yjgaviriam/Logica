@@ -129,16 +129,14 @@ public class Principal extends javax.swing.JFrame {
                 // Mostramos en pantalla la formula convertida
                 if (typeFormula == Convert.INFIX_FORMULA) {
                     txtAreaPolish.setText(newFormula);
+                    PrefixFormula prefixFormula = new PrefixFormula(Convert.prefixFormula, Convert.formulas);
+                    prefixFormula.setLocationByPlatform(true);
+                    prefixFormula.setVisible(true);
                 } else {
                     txtAreaInfix.setText(newFormula);
                 }
 
                 try {
-                    
-                    
-                    PrefixFormula prefixFormula = new PrefixFormula(Convert.prefixFormula, Convert.formulas);
-                    prefixFormula.setLocationByPlatform(true);
-                    prefixFormula.setVisible(true);
 
                     JFrame frame = new JFrame();
                     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

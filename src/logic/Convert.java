@@ -70,9 +70,35 @@ public class Convert {
                 return false;
             }
 
+            System.err.println("TAMÑO DE LA FORMULA " + formula.length());
             return validatePolishFormula(formula, formula.length() - 1);
         } else {
             return validateInfixFormula(formula);
+        }
+    }
+
+    /**
+     * Se encarga de realizar el borrado del listado de caracteres, con esto
+     * saber si la formula esta bien formada
+     *
+     * @param number Numero de caracteres a eliminar
+     * @return true si se pudo borrar y sigue estando bien formada, false en
+     * caso de excepcion(mal formada)
+     */
+    private static boolean deleteCharacter(int number) {
+
+        // Retorna que toco ocurrio bien al terminar de borrar la cantidad de caracteres especificados
+        if (number == 0) {
+            return true;
+        }
+
+        // Tratamos de eliminar en caso de no encontrar la posicion esta mal formada y retornamos el false
+        try {
+            number = number - 1;
+            charactersFormulas.remove(number);
+            return deleteCharacter(number);
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            return false;
         }
     }
 
@@ -126,7 +152,7 @@ public class Convert {
         for (int i = 0; i < formula.length(); i++) {
 
             // Se valida que sea una letra el caracter
-            if (Character.isLetter(formula.charAt(i))) {
+            if (Character.isLetter(formula.charAt(i)) && !isOperatorPolishFormula(formula.charAt(i))) {
 
                 // Bandera para saber si agregar o no el atomo
                 boolean existe = false;
@@ -159,29 +185,43 @@ public class Convert {
      */
     private static boolean validatePolishFormula(String formula, int i) {
 
+        System.err.println("Vamos " + formula.charAt(i) + " tamaño formulas " + charactersFormulas.size() + " valor de i " + i);
+
         // Cuando termino de recorrer la formula
-        if (i == -1) {
-            return charactersFormulas.size() == 1;
-        } else if (isOperatorPolishFormula(formula.charAt(i)) && charactersFormulas.size() < 2) {
-            System.err.println("Error con el binario " + formula.charAt(i));
+        if (i == 0 && !isOperatorPolishFormula(formula.charAt(i))) {
+            return false;
+        } else if (i == 0 && formula.charAt(i) == 'N' && charactersFormulas.size() == 1) {
+            return true;
+        } else if (i == 0 && isOperatorPolishFormula(formula.charAt(i)) && formula.charAt(i) != 'N' && charactersFormulas.size() == 2) {
+            return true;
+        } else if (i == 0) {
             return false;
         }
-        
-        if(isOperatorPolishFormula(formula.charAt(i))) {
-            charactersFormulas.remove(0);
-            charactersFormulas.remove(0);
-        }
-        
-        
-        charactersFormulas.add('F');
-        
-        
-        /*if (formula.charAt(0) == 'N') {
-            return validatePolishFormula(formula);
-        }*/
-        validatePolishFormula(formula, i -1);
 
-        return true;
+        // En caso de ser la negacion, solo se borra una formula del listado
+        if (formula.charAt(i) == 'N') {
+            // Si responde bien quiere decir que habia la cantidad necesaria para borrar y sigue estando bien formada
+            if (deleteCharacter(1)) {
+                charactersFormulas.add('F');
+                return validatePolishFormula(formula, i - 1);
+            } else {
+                return false;
+            }
+        }
+
+        // Si es un operador vamos a eliminar formulas del arrayList
+        if (isOperatorPolishFormula(formula.charAt(i))) {
+            // Si responde bien quiere decir que habia la cantidad necesaria para borrar y sigue estando bien formada
+            if (deleteCharacter(2)) {
+                charactersFormulas.add('F');
+                return validatePolishFormula(formula, i - 1);
+            } else {
+                return false;
+            }
+        } else {
+            charactersFormulas.add('F');
+            return validatePolishFormula(formula, i - 1);
+        }
     }
 
     /**
