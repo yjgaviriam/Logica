@@ -16,7 +16,7 @@ public class TreeInfix extends JPanel {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        drawTree(this.root, 350, 40, 90, 55, graphics, Color.ORANGE, true);
+        drawTree(this.root, this.getWidth() / 2, 20, this.getWidth() / 2, 20, graphics, Color.ORANGE, true);
     }
 
     public void drawTree(Node nodeActual, int x, int y, int x2, int y2, Graphics g, Color colorP, boolean isFirstNode) {
@@ -46,9 +46,7 @@ public class TreeInfix extends JPanel {
             if (nodeActual.getRight() != null) {
                 drawTree(nodeActual.getRight(), (x) + (width(height(nodeActual))), y + 100, x, y, g, colorP, false);
             }
-
         }
-
     }
 
     public int height(Node node) {

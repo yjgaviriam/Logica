@@ -92,7 +92,7 @@ public class Principal extends javax.swing.JFrame {
      */
     private void enableClearTextArea(JTextArea textArea) {
         textArea.setText("");
-        textArea.setEnabled(true);
+        textArea.setEditable(true);
     }
 
     /**
@@ -102,7 +102,7 @@ public class Principal extends javax.swing.JFrame {
      */
     private void disableClearTextArea(JTextArea textArea) {
         textArea.setText("");
-        textArea.setEnabled(false);
+        textArea.setEditable(false);
     }
 
     /**
@@ -142,13 +142,10 @@ public class Principal extends javax.swing.JFrame {
                         frame.setLocationByPlatform(true);
 
                         TreeInfix treeInfix = new TreeInfix(Convert.root);
-                        frame.setSize(800, 600);
+                        frame.setSize(1280, 768);
                         frame.setVisible(true);
                         frame.add(treeInfix);
 
-                        /*nodo.dibujarSubformula(Convert.root, jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
-                            jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
-                            nodo, Color.GREEN);*/
                     } catch (HeadlessException ex) {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(null, "Se presento un problema al tratar de dibujar el arbol.");
@@ -164,13 +161,10 @@ public class Principal extends javax.swing.JFrame {
                         frame.setLocationByPlatform(true);
 
                         TreePolish treePolish = new TreePolish(Convert.root);
-                        frame.setSize(800, 600);
+                        frame.setSize(1280, 768);
                         frame.setVisible(true);
                         frame.add(treePolish);
 
-                        /*nodo.dibujarSubformula(Convert.root, jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
-                            jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
-                            nodo, Color.GREEN);*/
                     } catch (HeadlessException ex) {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(null, "Se presento un problema al tratar de dibujar el arbol.");

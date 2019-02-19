@@ -30,6 +30,8 @@ public class Convert {
      */
     public static String prefixFormula;
 
+    private static String polishFormula;
+
     /**
      * Contiene la lista de formulas
      */
@@ -341,64 +343,105 @@ public class Convert {
 
     private static String convertPolishToInfix(String formula) {
 
-        root = new Node("A");
+        root = new Node("" + formula.charAt(0));
 
-        Node node1 = new Node("C");
-        
-        root.setLeft(node1);
-        
-        Node node2 = new Node("p");
-        
-        node1.setLeft(node2);
-        
-        Node node3 = new Node("K");
-        
-        node1.setRight(node3);
-        
-        Node node4 = new Node("q");
-        
-        node3.setLeft(node4);
-        
-        Node node5 = new Node("r");
-        
-        node3.setRight(node5);
-        
-        Node node6 = new Node("E");
-        
-        root.setRight(node6);
-        
-        Node node7 = new Node("p");
-        
-        node6.setLeft(node7);
-        
-        Node node8 = new Node("r");
-        
-        node6.setRight(node8);
-        
-        /*root = new Node("K");
+        Node lastNode = convertPolishToInfix(formula.substring(1), root);
 
-        Node node1 = new Node("E");
-        
-        root.setLeft(node1);
-        
-        Node node2 = new Node("p");
-        
-        node1.setLeft(node2);
-        
-        Node node3 = new Node("N");
-        
-        node1.setRight(node3);
-        
-        Node node4 = new Node("q");
-        
-        
-        node3.setLeft(node4);
-        
-        Node node5 = new Node("p");
-        
-        root.setRight(node5);*/
-
+        test(polishFormula, lastNode);
+        //imprimir(root);
         return "";
+    }
+
+    private static Node convertPolishToInfix(String polishFormula, Node nodeActual) {
+
+        if (polishFormula.length() == 1) {
+            Node nodeAux = new Node("" + polishFormula.charAt(0));
+            nodeAux.setNegation(nodeActual);
+
+            nodeActual.setLeft(nodeAux);
+
+            Convert.polishFormula = "";
+
+            return null;
+        }
+
+        Node nodeAux = new Node("" + polishFormula.charAt(0));
+        nodeAux.setNegation(nodeActual);
+
+        nodeActual.setLeft(nodeAux);
+
+        if (isAtom(polishFormula.charAt(0))) {
+            Convert.polishFormula = polishFormula.substring(1);
+            return nodeAux;
+        }
+
+        return convertPolishToInfix(polishFormula.substring(1), nodeAux);
+    }
+
+    private static Node test(String polishFormula, Node nodeActual) {
+
+        if (polishFormula.length() == 1) {
+            Node nodeAux = new Node("" + polishFormula.charAt(0));
+
+            if (isAtom(nodeActual.getValue().charAt(0))) {
+                return test(polishFormula, nodeActual.getNegation());
+            } else if (nodeActual.getValue().charAt(0) == 'N') {
+                if (nodeActual.getLeft() == null) {
+                    nodeActual.setLeft(nodeAux);
+                    nodeAux.setNegation(nodeActual);
+                    return null;
+                } else {
+                    return test(polishFormula, nodeActual.getNegation());
+                }
+            } else if (isOperatorPolishFormula(nodeActual.getValue().charAt(0)) && nodeActual.getValue().charAt(0) != 'N') {
+                if (nodeActual.getLeft() == null) {
+                    nodeActual.setLeft(nodeAux);
+                    nodeAux.setNegation(nodeActual);
+                    return null;
+                } else if (nodeActual.getRight() == null) {
+                    nodeActual.setRight(nodeAux);
+                    nodeAux.setNegation(nodeActual);
+                    return null;
+                } else {
+                    return test(polishFormula, nodeActual.getNegation());
+                }
+            } else if (nodeActual.getNegation() == null) {
+                return null;
+            }
+
+            return null;
+        }
+
+        Node nodeAux = new Node("" + polishFormula.charAt(0));
+
+        // Si es atomo
+        if (isAtom(nodeActual.getValue().charAt(0))) {
+            return test(polishFormula, nodeActual.getNegation());
+        } else if (nodeActual.getValue().charAt(0) == 'N') {
+            if (nodeActual.getLeft() == null) {
+                nodeActual.setLeft(nodeAux);
+                nodeAux.setNegation(nodeActual);
+                return test(polishFormula.substring(1), nodeAux);
+            } else {
+                return test(polishFormula, nodeActual.getNegation());
+            }
+        } else if (isOperatorPolishFormula(nodeActual.getValue().charAt(0)) && nodeActual.getValue().charAt(0) != 'N') {
+            if (nodeActual.getLeft() == null) {
+                nodeActual.setLeft(nodeAux);
+                nodeAux.setNegation(nodeActual);
+                return test(polishFormula.substring(1), nodeAux);
+            } else if (nodeActual.getRight() == null) {
+                nodeActual.setRight(nodeAux);
+                nodeAux.setNegation(nodeActual);
+                return test(polishFormula.substring(1), nodeAux);
+            } else {
+                return test(polishFormula, nodeActual.getNegation());
+            }
+        } else if (nodeActual.getNegation() == null) {
+            return null;
+        }
+
+        return test(polishFormula.substring(1), nodeAux);
     }
 
     /**
@@ -632,11 +675,7 @@ public class Convert {
 
         System.out.println("Nodo " + node.getValue());
 
-        if (node.getNegation() != null) {
-            System.out.println("Directo ->");
-
-            imprimir(node.getNegation());
-        }
+        
 
         if (node.getLeft() != null) {
             System.out.println("Izquierda ->");
