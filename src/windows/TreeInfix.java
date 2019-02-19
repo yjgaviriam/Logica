@@ -5,6 +5,10 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import logic.Node;
 
+/**
+ * 
+ * @author xJoni
+ */
 public class TreeInfix extends JPanel {
 
     private Node root;

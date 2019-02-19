@@ -341,27 +341,38 @@ public class Convert {
         }
     }
 
+    /**
+     * Se encarga de construir la formula a infija desde polaca
+     *
+     * @param formula a convertir a infija
+     * @return formula en infija
+     */
     private static String convertPolishToInfix(String formula) {
 
         root = new Node("" + formula.charAt(0));
 
-        Node lastNode = convertPolishToInfix(formula.substring(1), root);
+        Node lastNode = convertPolishToInfixFirstBranch(formula.substring(1), root);
 
-        test(polishFormula, lastNode);
-        //imprimir(root);
+        convertPolishToInfix(polishFormula, lastNode);
+
         return "";
     }
 
-    private static Node convertPolishToInfix(String polishFormula, Node nodeActual) {
+    /**
+     * Se encarga en crear la primera rama del arbol
+     *
+     * @param polishFormula Formula a convertir en arbol
+     * @param nodeActual Nodo que se esta operando
+     * @return el ultimo nodo que es el atomo
+     */
+    private static Node convertPolishToInfixFirstBranch(String polishFormula, Node nodeActual) {
 
         if (polishFormula.length() == 1) {
             Node nodeAux = new Node("" + polishFormula.charAt(0));
             nodeAux.setNegation(nodeActual);
-
             nodeActual.setLeft(nodeAux);
 
             Convert.polishFormula = "";
-
             return null;
         }
 
@@ -375,23 +386,31 @@ public class Convert {
             return nodeAux;
         }
 
-        return convertPolishToInfix(polishFormula.substring(1), nodeAux);
+        return convertPolishToInfixFirstBranch(polishFormula.substring(1), nodeAux);
     }
 
-    private static Node test(String polishFormula, Node nodeActual) {
+    /**
+     * Se encarga de continuar creando el arbol apartir de la primera rama ya
+     * creada
+     *
+     * @param polishFormula Formula que resta por convertir al arbol
+     * @param nodeActual Nodo en que se va operando el arbol
+     * @return null
+     */
+    private static Node convertPolishToInfix(String polishFormula, Node nodeActual) {
 
         if (polishFormula.length() == 1) {
             Node nodeAux = new Node("" + polishFormula.charAt(0));
 
             if (isAtom(nodeActual.getValue().charAt(0))) {
-                return test(polishFormula, nodeActual.getNegation());
+                return convertPolishToInfix(polishFormula, nodeActual.getNegation());
             } else if (nodeActual.getValue().charAt(0) == 'N') {
                 if (nodeActual.getLeft() == null) {
                     nodeActual.setLeft(nodeAux);
                     nodeAux.setNegation(nodeActual);
                     return null;
                 } else {
-                    return test(polishFormula, nodeActual.getNegation());
+                    return convertPolishToInfix(polishFormula, nodeActual.getNegation());
                 }
             } else if (isOperatorPolishFormula(nodeActual.getValue().charAt(0)) && nodeActual.getValue().charAt(0) != 'N') {
                 if (nodeActual.getLeft() == null) {
@@ -403,7 +422,7 @@ public class Convert {
                     nodeAux.setNegation(nodeActual);
                     return null;
                 } else {
-                    return test(polishFormula, nodeActual.getNegation());
+                    return convertPolishToInfix(polishFormula, nodeActual.getNegation());
                 }
             } else if (nodeActual.getNegation() == null) {
                 return null;
@@ -416,32 +435,32 @@ public class Convert {
 
         // Si es atomo
         if (isAtom(nodeActual.getValue().charAt(0))) {
-            return test(polishFormula, nodeActual.getNegation());
+            return convertPolishToInfix(polishFormula, nodeActual.getNegation());
         } else if (nodeActual.getValue().charAt(0) == 'N') {
             if (nodeActual.getLeft() == null) {
                 nodeActual.setLeft(nodeAux);
                 nodeAux.setNegation(nodeActual);
-                return test(polishFormula.substring(1), nodeAux);
+                return convertPolishToInfix(polishFormula.substring(1), nodeAux);
             } else {
-                return test(polishFormula, nodeActual.getNegation());
+                return convertPolishToInfix(polishFormula, nodeActual.getNegation());
             }
         } else if (isOperatorPolishFormula(nodeActual.getValue().charAt(0)) && nodeActual.getValue().charAt(0) != 'N') {
             if (nodeActual.getLeft() == null) {
                 nodeActual.setLeft(nodeAux);
                 nodeAux.setNegation(nodeActual);
-                return test(polishFormula.substring(1), nodeAux);
+                return convertPolishToInfix(polishFormula.substring(1), nodeAux);
             } else if (nodeActual.getRight() == null) {
                 nodeActual.setRight(nodeAux);
                 nodeAux.setNegation(nodeActual);
-                return test(polishFormula.substring(1), nodeAux);
+                return convertPolishToInfix(polishFormula.substring(1), nodeAux);
             } else {
-                return test(polishFormula, nodeActual.getNegation());
+                return convertPolishToInfix(polishFormula, nodeActual.getNegation());
             }
         } else if (nodeActual.getNegation() == null) {
             return null;
         }
 
-        return test(polishFormula.substring(1), nodeAux);
+        return convertPolishToInfix(polishFormula.substring(1), nodeAux);
     }
 
     /**
@@ -635,58 +654,4 @@ public class Convert {
                 return ' ';
         }
     }
-
-    /*private static String convertInfixToPolish(String infixFormula) {
-
-        // Casos basicos para determinar si esta o no bien formada la formula
-        if (infixFormula.length() == 1) {
-            System.out.println(infixFormula.charAt(0));
-            characters.add(infixFormula.charAt(0));
-            return "" + infixFormula.charAt(0);
-        }
-
-        // Cuando comienza por negado ¬
-        if (infixFormula.charAt(0) == '¬') {
-            String auxFormula = infixFormula.substring(2, infixFormula.length() - 1);
-            System.out.println("N");
-            characters.add(infixFormula.charAt(0));
-            return "N" + convertInfixToPolish(auxFormula);
-        } else if (infixFormula.charAt(0) == '(') { // Cuando comienza por (
-
-            // Tomamos la posicion del operador principal
-            int positionOperatorPrincipal = searchPositionOperatorPrincipal(infixFormula);
-
-            // Convertimos el operador
-            char operatorConvert = convertOperatorInfixToPolish(infixFormula.charAt(positionOperatorPrincipal));
-
-            System.out.println(operatorConvert);
-            characters.add(operatorConvert);
-
-            // Se toma la siguiente parte de la infixFormula a trabajar
-            String auxFormula = infixFormula.substring(1, positionOperatorPrincipal - 1);
-            String auxFormula2 = infixFormula.substring(positionOperatorPrincipal + 2, infixFormula.length() - 1);
-
-            return operatorConvert + convertInfixToPolish(auxFormula) + convertInfixToPolish(auxFormula2);
-        }
-
-        return "";
-    }*/
- /*private static void imprimir(Node node) {
-
-        System.out.println("Nodo " + node.getValue());
-
-        
-
-        if (node.getLeft() != null) {
-            System.out.println("Izquierda ->");
-            imprimir(node.getLeft());
-
-        }
-
-        if (node.getRight() != null) {
-            System.out.println("Derecho ->");
-            imprimir(node.getRight());
-
-        }
-    }*/
 }

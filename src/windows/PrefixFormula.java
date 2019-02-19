@@ -28,6 +28,11 @@ public class PrefixFormula extends javax.swing.JFrame {
         showSteps(formulas);
     }
 
+    /**
+     * Se encarga de pintar los pasos de la convercion
+     *
+     * @param formulas Listado con los objetos utilizados para la explicacion
+     */
     private void showSteps(ArrayList<Formula> formulas) {
 
         String steps = "";
