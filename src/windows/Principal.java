@@ -41,7 +41,7 @@ public class Principal extends javax.swing.JFrame {
             public void keyTyped(KeyEvent e) {
 
                 // Se limpia e inhabilita el textArea que no se esta trabajando
-                disableClearTextArea(txtAreaPolish);
+                //disableClearTextArea(txtAreaPolish);
 
                 // Validacion para no tomar las teclas que no tienen que ver con la formula
                 if ((e.getKeyChar() < 112 || e.getKeyChar() > 122 || (e.getKeyChar() > 115 && e.getKeyChar() < 119)) && (e.getKeyChar() != 40 && e.getKeyChar() != 41)) {
@@ -56,7 +56,7 @@ public class Principal extends javax.swing.JFrame {
             public void keyTyped(KeyEvent e) {
 
                 // Se limpia e inhabilita el textArea que no se esta trabajando
-                disableClearTextArea(txtAreaInfix);
+                //disableClearTextArea(txtAreaInfix);
 
                 // Validacion para no tomar las teclas que no tienen que ver con la formula
                 if ((e.getKeyChar() != 78 && e.getKeyChar() != 65 && e.getKeyChar() != 75 && e.getKeyChar() != 67 && e.getKeyChar() != 69)
@@ -78,7 +78,7 @@ public class Principal extends javax.swing.JFrame {
     private void writeTextArea(String text, JTextArea textAreaWrite, JTextArea textAreaClear) {
         try {
             // Se limpia e inhabilita el textArea que no se esta trabajando
-            disableClearTextArea(textAreaClear);
+            //disableClearTextArea(textAreaClear);
             // Se escribe en el textArea que se presiono el boton
             textAreaWrite.getDocument().insertString(textAreaWrite.getCaretPosition(), text, null);
         } catch (BadLocationException ex) {
@@ -90,20 +90,20 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Se encarga de limpiar las cajas de texto y habilitarlas
      */
-    private void enableClearTextArea(JTextArea textArea) {
+    /*private void enableClearTextArea(JTextArea textArea) {
         textArea.setText("");
         textArea.setEditable(true);
-    }
+    }*/
 
     /**
      * Se encarga de deshabilitar y limpiar el texto del text area indicado
      *
      * @param textArea
      */
-    private void disableClearTextArea(JTextArea textArea) {
+    /*private void disableClearTextArea(JTextArea textArea) {
         textArea.setText("");
         textArea.setEditable(false);
-    }
+    }*/
 
     /**
      * Valida que la formula ingresada en los campos este bien formada antes de
@@ -793,7 +793,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLetterZActionPerformed
 
     private void btnClearInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearInfixActionPerformed
-        enableClearTextArea(txtAreaInfix);
+        //enableClearTextArea(txtAreaInfix);
     }//GEN-LAST:event_btnClearInfixActionPerformed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -805,7 +805,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiExitActionPerformed
 
     private void btnClearPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPolishActionPerformed
-        enableClearTextArea(txtAreaPolish);
+        //enableClearTextArea(txtAreaPolish);
     }//GEN-LAST:event_btnClearPolishActionPerformed
 
     private void btnLetterYPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYPolishActionPerformed

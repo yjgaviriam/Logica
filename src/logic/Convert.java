@@ -72,7 +72,6 @@ public class Convert {
                 return false;
             }
 
-            System.err.println("TAMÑO DE LA FORMULA " + formula.length());
             return validatePolishFormula(formula, formula.length() - 1);
         } else {
             return validateInfixFormula(formula);
@@ -355,7 +354,7 @@ public class Convert {
 
         convertPolishToInfix(polishFormula, lastNode);
 
-        return "";
+        return createPolishFormula(root);
     }
 
     /**
@@ -461,6 +460,25 @@ public class Convert {
         }
 
         return convertPolishToInfix(polishFormula.substring(1), nodeAux);
+    }
+
+    /**
+     * Se encarga de construir la formula en polaca apartir del arbol
+     * @param node Nodo que va iterando
+     * @return 
+     */
+    private static String createPolishFormula(Node node) {
+
+        // Casos de parada
+        if (node.getValue().charAt(0) == 'N' && isAtom(node.getLeft().getValue().charAt(0))) {
+            return convertOperatorPolishToInfix(node.getValue().charAt(0)) + "(" + node.getLeft().getValue() + ")";
+        } else if (node.getValue().charAt(0) == 'N' && isOperatorPolishFormula(node.getLeft().getValue().charAt(0))) {
+            return convertOperatorPolishToInfix(node.getValue().charAt(0)) + "(" + createPolishFormula(node.getLeft()) + ")";
+        } else if (isOperatorPolishFormula(node.getValue().charAt(0)) && node.getValue().charAt(0) != 'N') {
+            return "(" + createPolishFormula(node.getLeft()) + ")" + convertOperatorPolishToInfix(node.getValue().charAt(0)) + "(" + createPolishFormula(node.getRight()) + ")";
+        } else {
+            return node.getValue();
+        }
     }
 
     /**
