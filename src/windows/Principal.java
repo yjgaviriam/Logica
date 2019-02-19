@@ -794,6 +794,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnClearInfixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearInfixActionPerformed
         //enableClearTextArea(txtAreaInfix);
+        txtAreaInfix.setText("");
     }//GEN-LAST:event_btnClearInfixActionPerformed
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
@@ -806,6 +807,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnClearPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearPolishActionPerformed
         //enableClearTextArea(txtAreaPolish);
+        txtAreaPolish.setText("");
     }//GEN-LAST:event_btnClearPolishActionPerformed
 
     private void btnLetterYPolishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLetterYPolishActionPerformed
