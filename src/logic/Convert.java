@@ -341,15 +341,15 @@ public class Convert {
 
     private static String convertPolishToInfix(String formula) {
 
-        /*root = new Node("A");
+        root = new Node("A");
 
         Node node1 = new Node("C");
         
-        root.setNegation(node1);
+        root.setLeft(node1);
         
         Node node2 = new Node("p");
         
-        node1.setNegation(node2);
+        node1.setLeft(node2);
         
         Node node3 = new Node("K");
         
@@ -357,7 +357,7 @@ public class Convert {
         
         Node node4 = new Node("q");
         
-        node3.setNegation(node4);
+        node3.setLeft(node4);
         
         Node node5 = new Node("r");
         
@@ -369,21 +369,21 @@ public class Convert {
         
         Node node7 = new Node("p");
         
-        node6.setNegation(node7);
+        node6.setLeft(node7);
         
         Node node8 = new Node("r");
         
-        node6.setRight(node8);*/
+        node6.setRight(node8);
         
-        root = new Node("K");
+        /*root = new Node("K");
 
         Node node1 = new Node("E");
         
-        root.setNegation(node1);
+        root.setLeft(node1);
         
         Node node2 = new Node("p");
         
-        node1.setNegation(node2);
+        node1.setLeft(node2);
         
         Node node3 = new Node("N");
         
@@ -392,11 +392,11 @@ public class Convert {
         Node node4 = new Node("q");
         
         
-        node3.setNegation(node4);
+        node3.setLeft(node4);
         
         Node node5 = new Node("p");
         
-        root.setRight(node5);
+        root.setRight(node5);*/
 
         return "";
     }
