@@ -23,7 +23,7 @@ public class Convert {
     /**
      * Cantidad de atomos que debe tener la formula
      */
-    public static final int NUMBER_ATOMS = 5;
+    public static final int NUMBER_ATOMS = 0;
 
     /**
      * Almacena la formula en prefijo
@@ -185,8 +185,6 @@ public class Convert {
      */
     private static boolean validatePolishFormula(String formula, int i) {
 
-        System.err.println("Vamos " + formula.charAt(i) + " tamaño formulas " + charactersFormulas.size() + " valor de i " + i);
-
         // Cuando termino de recorrer la formula
         if (i == 0 && !isOperatorPolishFormula(formula.charAt(i))) {
             return false;
@@ -342,6 +340,63 @@ public class Convert {
     }
 
     private static String convertPolishToInfix(String formula) {
+
+        /*root = new Node("A");
+
+        Node node1 = new Node("C");
+        
+        root.setNegation(node1);
+        
+        Node node2 = new Node("p");
+        
+        node1.setNegation(node2);
+        
+        Node node3 = new Node("K");
+        
+        node1.setRight(node3);
+        
+        Node node4 = new Node("q");
+        
+        node3.setNegation(node4);
+        
+        Node node5 = new Node("r");
+        
+        node3.setRight(node5);
+        
+        Node node6 = new Node("E");
+        
+        root.setRight(node6);
+        
+        Node node7 = new Node("p");
+        
+        node6.setNegation(node7);
+        
+        Node node8 = new Node("r");
+        
+        node6.setRight(node8);*/
+        
+        root = new Node("K");
+
+        Node node1 = new Node("E");
+        
+        root.setNegation(node1);
+        
+        Node node2 = new Node("p");
+        
+        node1.setNegation(node2);
+        
+        Node node3 = new Node("N");
+        
+        node1.setRight(node3);
+        
+        Node node4 = new Node("q");
+        
+        
+        node3.setNegation(node4);
+        
+        Node node5 = new Node("p");
+        
+        root.setRight(node5);
 
         return "";
     }

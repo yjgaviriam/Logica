@@ -128,33 +128,54 @@ public class Principal extends javax.swing.JFrame {
 
                 // Mostramos en pantalla la formula convertida
                 if (typeFormula == Convert.INFIX_FORMULA) {
+                    
                     txtAreaPolish.setText(newFormula);
+                    
                     PrefixFormula prefixFormula = new PrefixFormula(Convert.prefixFormula, Convert.formulas);
                     prefixFormula.setLocationByPlatform(true);
                     prefixFormula.setVisible(true);
-                } else {
-                    txtAreaInfix.setText(newFormula);
-                }
 
-                try {
+                    try {
 
-                    JFrame frame = new JFrame();
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.setLocationByPlatform(true);
+                        JFrame frame = new JFrame();
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.setLocationByPlatform(true);
 
-                    Tree nodo = new Tree(Convert.root);
-                    frame.setSize(800, 600);
-                    frame.setVisible(true);
-                    frame.add(nodo);
-                    
-                    /*nodo.dibujarSubformula(Convert.root, jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
+                        TreeInfix treeInfix = new TreeInfix(Convert.root);
+                        frame.setSize(800, 600);
+                        frame.setVisible(true);
+                        frame.add(treeInfix);
+
+                        /*nodo.dibujarSubformula(Convert.root, jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
                             jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
                             nodo, Color.GREEN);*/
-                } catch (HeadlessException ex) {
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "Se presento un problema al tratar de dibujar el arbol.");
-                }
+                    } catch (HeadlessException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Se presento un problema al tratar de dibujar el arbol.");
+                    }
 
+                } else {
+                    txtAreaInfix.setText(newFormula);
+
+                    try {
+
+                        JFrame frame = new JFrame();
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.setLocationByPlatform(true);
+
+                        TreePolish treePolish = new TreePolish(Convert.root);
+                        frame.setSize(800, 600);
+                        frame.setVisible(true);
+                        frame.add(treePolish);
+
+                        /*nodo.dibujarSubformula(Convert.root, jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
+                            jPanel2.getWidth() / 2, jPanel2.getHeight() - 420,
+                            nodo, Color.GREEN);*/
+                    } catch (HeadlessException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Se presento un problema al tratar de dibujar el arbol.");
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Debe Ingresar Mínimo 5 \nFormas Proposicionales Atómicas");
             }

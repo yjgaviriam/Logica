@@ -5,21 +5,21 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import logic.Node;
 
-public class Tree extends JPanel {
+public class TreeInfix extends JPanel {
 
     private Node root;
 
-    public Tree(Node root) {
+    public TreeInfix(Node root) {
         this.root = root;
     }
 
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        dibujarSubformula(this.root, 350, 40, 90, 55, graphics, Color.ORANGE, true);
+        drawTree(this.root, 350, 40, 90, 55, graphics, Color.ORANGE, true);
     }
 
-    public void dibujarSubformula(Node nodeActual, int x, int y, int x2, int y2, Graphics g, Color colorP, boolean isFirstNode) {
+    public void drawTree(Node nodeActual, int x, int y, int x2, int y2, Graphics g, Color colorP, boolean isFirstNode) {
 
         if (nodeActual != null) {
 
@@ -35,34 +35,34 @@ public class Tree extends JPanel {
             g.drawString("" + nodeActual.getValue(), (x) + 11, (y) + 20);
 
             if (nodeActual.getNegation() != null) {
-                dibujarSubformula(nodeActual.getNegation(), (x) - (anchoX(altura(nodeActual))), y + 100, x, y, g, colorP, false);
+                drawTree(nodeActual.getNegation(), (x) - (width(height(nodeActual))), y + 100, x, y, g, colorP, false);
             }
 
             if (nodeActual.getLeft() != null) {
-                dibujarSubformula(nodeActual.getLeft(), (x) - (anchoX(altura(nodeActual))), y + 100, x, y, g, colorP, false);
+                drawTree(nodeActual.getLeft(), (x) - (width(height(nodeActual))), y + 100, x, y, g, colorP, false);
 
             }
 
             if (nodeActual.getRight() != null) {
-                dibujarSubformula(nodeActual.getRight(), (x) + (anchoX(altura(nodeActual))), y + 100, x, y, g, colorP, false);
+                drawTree(nodeActual.getRight(), (x) + (width(height(nodeActual))), y + 100, x, y, g, colorP, false);
             }
 
         }
 
     }
 
-    public int altura(Node node) {
+    public int height(Node node) {
         if (node.getLeft() == null && node.getRight() == null) {
             return 1;
         } else {
-            int p1 = (node.getLeft() == null) ? 0 : altura(node.getLeft());
-            int p2 = (node.getRight() == null) ? 0 : altura(node.getRight());
+            int p1 = (node.getLeft() == null) ? 0 : height(node.getLeft());
+            int p2 = (node.getRight() == null) ? 0 : height(node.getRight());
 
             return Math.max(p1, p2) + 1;
         }
     }
 
-    public int anchoX(int n) {
+    public int width(int n) {
 
         if (n == 6) {
             return 300;
