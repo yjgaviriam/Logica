@@ -23,13 +23,16 @@ public class Convert {
     /**
      * Cantidad de atomos que debe tener la formula
      */
-    public static final int NUMBER_ATOMS = 0;
+    public static final int NUMBER_ATOMS = 5;
 
     /**
      * Almacena la formula en prefijo
      */
     public static String prefixFormula;
 
+    /**
+     * Almacena la formula restante de polaca
+     */
     private static String polishFormula;
 
     /**
